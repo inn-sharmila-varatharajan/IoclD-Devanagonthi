@@ -1,0 +1,399 @@
+﻿@{
+
+}
+<head>
+   
+   
+    <style>
+       
+        .card {
+            border: 1px solid grey;
+            position:absolute;
+            left:20pc;
+            top: 10pc;
+            font-size:large;
+            min-width:50%;
+        }
+
+        .card1 {
+            border: 1px solid grey;
+            border-radius: 10px;
+            font-size: large;
+        }
+        .form-control{
+            font-size:initial;
+        }
+        .btn-primary {
+            font-size: initial;
+        }
+        .btn-secondary {
+            font-size: initial;
+        }
+        .btn-danger{
+            font-size:initial;
+        }
+
+        @@media screen and (min-width: 0px) and (max-width: 1000px) {
+            .card {
+                left: 6pc;
+            }
+        }
+        .modal {
+            position: fixed; /* Stay in place */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content{
+            top:7pc;
+        }
+
+        .f-left {
+
+            float: left;
+            margin-left:0%;
+            margin-top:30px;
+        }
+
+        .f-right {
+            margin-right:10%;
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+         
+    </style>
+</head>
+<body>
+    <div class="f-left">
+        <h1 style="font-weight:bold;">
+            Truck Modification
+        </h1>
+    </div>
+    <div class="f-right">
+        <div class="col" style="margin-top:10px;">
+            <button class="btn btn-primary" id="add" style="width:150px;" type="button">Add Truck</button>
+
+
+        </div>
+
+        <button  class="btn btn-primary mt-2"  style="width:150px;margin-left:15px;"  onclick='location.href="@Url.Action("Upload", "Home")"'>Upload CSV</button>
+
+            @*<input id="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" />
+            <button class="btn btn-success" name="submit" id="csvsubmit" type="submit"> Upload File </button>*@
+
+    </div>
+        <div class="card">
+
+            <div class="row mb-3 mt-3">
+                <div class="col ml-3">
+                    <h5>Truck Number*</h5>
+                    <input type="text" id="vehno" class="form-control">
+                </div>
+
+                <div class="col">
+
+                    <button type="submit" id="search" class="btn btn-primary mt-4">Search</button>
+
+                </div>
+            </div>
+
+            <div id="custom">
+                <div class="card1 m-3">
+                    <div class=" mr-2 ml-2 mt-3">
+                        <div class="row">
+
+                            <div class="col mr-3">
+                                <h5>Truck Number*</h5>
+                                <input type="text" id="truckno" class="form-control" placeholder="Truck Number" required>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 ">
+                            <div class="col">
+                                <h5>Driver Name*</h5>
+                                <input type="text" id="dname" value="" class="form-control" placeholder="Driver Name" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col">
+                                <h5>Driver Type</h5>
+                                <input type="text" id="owntype" value="" class="form-control" placeholder="Driver Type">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 ">
+                            <div class="col">
+                                <h5>Transporter Name</h5>
+                                <input type="text" id="transname" class="form-control" placeholder="Transporter Name">
+
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col">
+                                <h5>Fastag ID</h5>
+                                <input type="text" id="fstid" class="form-control" placeholder="Fastag ID">
+
+                            </div>
+                        </div>
+                        <div class="row mt-3 ">
+                            <div class="col-4">
+                                <h5>NFC ID*</h5>
+                                <input type="text" id="nfcid"  class="form-control required" placeholder="NFC ID" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 mb-3 mr-2 ml-3">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-primary me-md-2" id="add1" type="button">Add Truck</button>
+                                <button class="btn btn-primary" id="modify" type="button">Modify</button>
+                                <button class="btn btn-primary ml-4" id="back" type="button">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="alert1">
+                <div class="modal-dialog" tabindex="1">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                No trucks has been found!  Do you want add it?
+
+                            </p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="addtruck" class="btn btn-danger">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+<script>
+
+  var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+    $("#custom").hide();
+
+    var filename;
+
+    $("#alert1").hide();
+
+    $("#search").click(function () {
+
+        if ((document.getElementById('vehno').value==""))
+        {
+            alert('Enter vehicle number');
+        }
+        else {
+            let url = weburl + "api/GetReportController/GetTruckDetails/" + document.getElementById('vehno').value;
+            axios.get(url).then
+
+                (data => {
+                    if (data.data.length == 0) {
+                        $("#alert1").show();
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+                            $("#custom").show();
+                            $("#add1").hide();
+                            $("#modify").show();
+
+                           // document.getElementById('action').value = obj.action;
+                           // document.getElementById('vendor').value = obj.vendor;
+                            document.getElementById('truckno').value = obj.trucknumber;
+                            document.getElementById('dname').value = obj.drivername;
+                            document.getElementById('owntype').value = obj.ownertype;
+                            document.getElementById('transname').value = obj.transportername;
+                            //document.getElementById('tt').value = obj.tt;
+                            document.getElementById('fstid').value = obj.fastagid;
+                            //document.getElementById('fdtdt').value = obj.fastagenrolmentdt;
+                            document.getElementById('nfcid').value = obj.nfcid;
+                            //document.getElementById('nfcdt').value = obj.nfcenrolementdt;
+                            //document.getElementById('isact').value = obj.isactive;
+
+                        }
+                    }
+
+                });
+
+            //  $("#custom").show();
+        } });
+    
+
+
+    $('#add1').click(function (e) {
+        e.stopPropagation();
+
+        addmodify();
+       
+    });
+    $('#modify').click(function () {
+
+        addmodify();
+    });
+
+    $('#back').click(function () {
+
+        $("#custom").hide();
+    });
+    $('#close').click(function () {
+        $("#alert1").hide();
+
+    });
+
+    $('#btn-close').click(function () {
+        $("#alert1").hide();
+
+    });
+
+    function addmodify() {
+
+
+        if ((document.getElementById('truckno').value)=="" )
+        {
+            alert(' Enter truck number ');
+        }
+        else if ((document.getElementById('dname').value == "")) {
+
+
+            alert('Enter driver name')
+        }
+        else if ((document.getElementById('nfcid').value == "")) {
+
+
+            alert('Enter NFC ID')
+        }
+
+        else {
+           // var action = document.getElementById("action").value;
+            var action = "0";
+
+           // var vendor = document.getElementById("vendor").value;
+            var vendor =   "0" ;
+
+            var truckno = document.getElementById("truckno").value;
+            truckno = truckno == "" ? "0" : truckno;
+
+            var dname = document.getElementById("dname").value;
+            dname = dname == "" ? "0" : dname;
+
+            var owntype = document.getElementById("owntype").value;
+            owntype = owntype == "" ? "0" : owntype;
+
+            var transname = document.getElementById("transname").value;
+            transname = transname == "" ? "0" : transname;
+
+            //var tt = document.getElementById("tt").value;
+            var tt =  "0" ;
+
+            //var fstid = document.getElementById("fstid").value;
+            var fstid =  "0" ;
+
+            //var fdtdt = document.getElementById("fdtdt").value;
+            var fdtdt =  "0" ;
+
+            var nfcid = document.getElementById("nfcid").value;
+            nfcid = nfcid == "" ? "0" : nfcid;
+
+            //var nfcdt = document.getElementById("nfcdt").value;
+           var nfcdt =  "0" ;
+
+           // var isact = document.getElementById("isact").value;
+            var isact =  "0";
+
+            let url = weburl + "api/GetReportController/GetTruckDetailsedit/" +
+                action + "/" +
+                vendor + "/" +
+                truckno + "/" +
+                dname + "/" +
+                owntype + "/" +
+                transname + "/" +
+                tt + "/" +
+                fstid + "/" +
+                fdtdt + "/" +
+                nfcid + "/" +
+                nfcdt + "/" +
+                isact
+                ;
+            axios.get(url).then
+
+                (data => {
+                    alert("Successfully updated");
+                    $("#custom").hide();
+                    document.getElementById('truckno').value = "";
+                    document.getElementById('dname').value = "";
+                    document.getElementById('owntype').value = "";
+                    document.getElementById('transname').value = "";
+                    document.getElementById('fstid').value = "";
+                    document.getElementById('nfcid').value = "";
+                    document.getElementById('vehno').value = "";
+                   
+                });
+        }
+    }
+
+
+
+    $('#file').change(function (e) {
+      
+        filename = e.target.files[0].name;  
+
+    })
+
+
+    $('#csvsubmit').click(function (e) {
+
+      
+
+
+       
+    });
+
+    
+
+
+   
+
+
+    $('#add').click(function (e) {
+        e.stopPropagation();
+        $("#custom").show();
+        $("#alert1").hide();
+        $("#modify").hide();
+        $("#add1").show();
+        document.getElementById('truckno').value = "";
+        document.getElementById('dname').value = "";
+        document.getElementById('owntype').value = "";
+        document.getElementById('transname').value = "";
+        document.getElementById('fstid').value = "";
+        document.getElementById('nfcid').value = "";
+        document.getElementById('vehno').value = "";
+    });
+    $('#addtruck').click(function (e) {
+        e.stopPropagation();
+        $("#custom").show();
+        $("#alert1").hide();
+        $("#modify").hide();
+        $("#add1").show();
+        document.getElementById('truckno').value = "";
+        document.getElementById('dname').value = "";
+        document.getElementById('owntype').value = "";
+        document.getElementById('transname').value = "";
+        document.getElementById('fstid').value = "";
+        document.getElementById('nfcid').value = "";
+        document.getElementById('vehno').value = "";
+    });
+
+
+    
+
+</script>

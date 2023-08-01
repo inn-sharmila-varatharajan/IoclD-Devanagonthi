@@ -1,0 +1,8 @@
+.counter-group {
+    cursor: pointer;
+    transition: width 2s, height 4s;
+}
+
+.counter-group .bg-area.bg-white {
+    fill: #fff !important;
+}

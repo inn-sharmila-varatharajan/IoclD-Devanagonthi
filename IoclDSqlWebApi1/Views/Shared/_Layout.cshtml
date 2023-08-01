@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("style", required: false)
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/jquery.min.js"></script>
+    <script src="../assets/popper.js"></script>
+    <script src="../assets/bootstrap.min.js"></script>
+    <script src="../assets/main.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+
+    <style>
+      
+
+        .container {
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+        }
+        @@media all and (min-width:1201px)  {
+            body {
+                width:100%;
+                overflow:hidden;
+            }
+        }
+        @@media all and (min-width:300px) and (max-width: 1200px) {
+            body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+        }
+
+        @@media all and (min-width:1001px)  {
+            .header {
+                background-color: #f37022;
+                width: 100%;
+                height: 70px;
+                margin-top: 0px;
+                text-align: center;
+               
+            }
+        }
+        @@media all and (min-width:200px) and (max-width: 1000px) {
+            .header {
+                background-color: #f37022;
+                width: 100%;
+                margin-top: 0px;
+                text-align: center;
+                height: 70px;
+            }
+        }
+            .subheader {
+                background-color: #03174f;
+                width: 100%;
+                height: 40px;
+                margin-top: 15px;
+            }
+
+
+
+        @@media all and (min-width:200px) and (max-width: 1000px) {
+            .h1class {
+                color: white;
+                align-items: center;
+                margin-top: -2px;
+                font-size:16px;
+            }
+        }
+        @@media all and (min-width:1001px) {
+            .h1class {
+                color: white;
+                align-items: center;
+                margin-top: -2px;
+            }
+        }
+
+            #hidden {
+                display: none;
+            }
+
+            #visible:hover #hidden {
+                display: block;
+            }
+
+            ul li a:hover {
+                color: black;
+                background: black;
+            }
+
+            ul li ul.dropdown {
+                min-width: 100%; /* Set width of the dropdown */
+                background: #f1f1f1;
+                display: none;
+                position: absolute;
+                z-index: 999;
+                left: 0;
+            }
+
+            ul li:hover ul.dropdown {
+                display: block;
+                width: 100% !important;
+                /* Display the dropdown */
+            }
+
+            ul li ul.dropdown li {
+                display: block;
+            }
+
+            li {
+                height: 60px;
+            }
+
+            leftside {
+                margin-left: 5%;
+            }
+
+            @@media all and (min-width:301px) and (max-width: 500px) {
+                .pagemargin {
+                    margin-left: 16%;
+                    width: 98%;
+                }
+            }
+
+            @@media all and (min-width:501px) and (max-width: 600px) {
+                .pagemargin {
+                    margin-left: 13%;
+                    width: 98%;
+                }
+            }
+
+            @@media all and (min-width:801px) and (max-width: 959px) {
+                .pagemargin {
+                    margin-left: 10%;
+                    width: 98%;
+                }
+            }
+
+            @@media all and (min-width:600px) and (max-width: 800px) {
+                .pagemargin {
+                    margin-left: 10%;
+                    width: 98%;
+                }
+            }
+
+            @@media all and (min-width:960px) and (max-width: 1200px) {
+                .pagemargin {
+                    margin-left: 6%;
+                    width: 99%;
+                }
+            }
+
+            @@media all and (min-width:1201px) {
+                .pagemargin {
+                    margin-left: 5%;
+                    width: 98%;
+                    overflow: hidden;
+                }
+            }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="wrapper d-flex align-items-stretch" style="width:100%;">
+        <nav id="sidebar" class="active" style="position:absolute;margin-top:40px;height:100%;">
+            <ul class="list-unstyled components mb-5" style=" margin-top: 0px;">
+                <li class="active">
+                    <a href="@Url.Action("Dashboard", "Home")"><img src="../assets/eye.png" style="color:white;" /></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("gas", "Home")">
+                        <span>
+                            <img src="../assets/shopfllor.png" style="        color: white;
+        filter: invert(100%);
+        -webkit-filter: invert(100%);
+        filter: sepia(100%);
+        -webkit-filter: sepia(100%);" />
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Card", "Home")">
+                        <img src="../assets/conveyor.png" style="color:white;" />
+                    </a>
+                </li>
+
+                <li>
+                    <img src="../assets/reports.png" style="margin-top:20px;" />
+
+                    <ul class="dropdown" style="background-color: #03174f;width:10% !important;">
+
+                        <li>
+                            <a href="@Url.Action("hourly", "Home")" style="position:fixed;
+        width: 150px;
+        background-color: #03174f;
+">Hourly</a>
+                        </li>
+
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("Monthly", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Monthly</a>
+                        </li>
+
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("Daily", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Daily</a>
+                        </li>
+
+
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("Interrupt", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Interrupt</a>
+                        </li>
+                        <li style="        width: 10% !important;margin-top: -14px;
+">
+                            <a href="@Url.Action("Truck", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Truck Wise</a>
+                        </li>
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("TruckOccupancy", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Bay Occupancy</a>
+                        </li>
+
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("Deviation", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Deviation Report</a>
+                        </li>
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("TruckPage", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Truck Modification</a>
+                        </li>
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("SensorPage", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Sensor Report</a>
+                        </li>
+                        <li style="        width: 10% !important;
+        margin-top: -14px;
+">
+                            <a href="@Url.Action("Unregnfc", "Home")" style="        position: fixed;
+        width: 150px;
+        background-color: #03174f;
+">Unregistered NFC</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <hr class="fa-solid" style="color:white;background:white;opacity:.2;" />
+
+                <li> <a href="@Url.Action("Settings", "Home")"><span class="fa fa-solid fa-gear"></span></a></li>
+                <li> <a href="@Url.Action("Config", "Home")"><img src="../assets/config.png" /></a></li>
+                <li> <a href="@Url.Action("Devicestatus", "Home")"><img src="../assets/status.png" /></a></li>
+                <li>
+                    <a href="@Url.Action("Login", "Home")">
+                        <img src="../assets/logout.png" />
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div  class="header">
+            <div class="subheader">
+                <div class="row">
+                    <h1 class="col-9 h1class">
+                        AI Based Production Insight System </h1>
+                    <div class="col-3" style="font-size:13px;text-align:center;color:white;" id="timenow">Welcome iiot_bu</br></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid pagemargin">
+        @RenderBody()
+
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @*<script src="https://unpkg.com/axios@0.27.2/dist/axios.min.js"></script>*@
+    <script src="../assets/axios.min.js"></script>
+
+    <script>
+
+        function handleTabletChange(e) {
+            // Check if the media query is true
+            if (e.matches) {
+                // Then log the following message to the console
+                document.getElementById("timenow").innerHTML = "Welcome " + user;
+
+            }
+            else
+                document.getElementById("timenow").innerHTML = "Welcome " + user + "</br >" + current_date + " 06:00:00" + " to " + current_date + " " + current_time;
+        }
+        var x = window.matchMedia("(max-width: 1000px)");
+        x.addListener(handleTabletChange)
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+     
+        var date = new Date();
+        var current_date = date.getUTCFullYear() + "-" + ('0' + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getUTCDate()).slice(-2);
+        var current_time = date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2);
+        var user = sessionStorage.getItem("username");
+        user = user.replace("aparinnosys.com", "");
+        user = user.substring(0, user.length - 1);
+        handleTabletChange(x);
+        $(function () {
+            $('#urlddl').change(function () {
+                var url = $(this).val();
+                if (url != null && url != '') {
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,538 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Gas Station</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../assets/gas_station.css">
+    <style>
+        .carousel-track {
+            stroke: #000 !important;
+        }
+
+        .track-success {
+            stroke: #27ae60 !important;
+        }
+
+        .track-danger {
+            stroke: #e74c3c !important;
+        }
+
+        .track-warning {
+            stroke: #e67e22 !important;
+        }
+
+        .track-alert {
+            stroke: #f1c40f !important;
+        }
+    </style>
+    <style>
+        @@media screen and (min-width: 0px) and (max-width: 680px)
+        {
+            .tooltip-inner {
+                transform: rotate(90deg);
+                font-size:95%;
+            }
+          
+        }
+
+        #gasStation_sketch_container {
+           height: 90% !important;
+           width : 90pc !important;
+        }
+        body{
+            overflow:hidden;
+        }
+        /*.tooltip {
+            transform-origin: 50px 50px;
+        }*/
+
+        .custom-tooltip {
+            --bs-tooltip-color: var(--bs-dark);
+            --bs-tooltip-bg: var(--bs-transparent);
+        }
+
+        .custom-tooltip-bg {
+            --bs-tooltip-color: var(--bs-dark);
+            --bs-tooltip-bg: var(--bs-transparent);
+           
+        }
+      
+        .item-hints {
+            height: 500px;
+            width: 500px;
+            margin: 250px auto;
+        }
+
+            .item-hints .hint {
+                width: 60px;
+                height: 60px;
+                margin: 150px auto;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+                .item-hints .hint::before {
+                    /* //rotated squre */
+                    background-color: #fff;
+                    width: 8px;
+                    height: 8px;
+                    z-index: 2;
+                    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+                    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    -webkit-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                }
+
+                .item-hints .hint::after {
+                    /* //green glow */
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    -webkit-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                    border-radius: 50%;
+                    width: 2px;
+                    height: 2px;
+                    z-index: 1;
+                    -webkit-box-shadow: 0 0 50px 30px rgba(72, 170, 72, 0.3);
+                    box-shadow: 0 0 50px 30px rgba(72, 170, 72, 0.3);
+                    -webkit-animation: home_hero_item_hints_glow 2s cubic-bezier(0.25, 0.1, 0.2, 1) infinite;
+                    animation: home_hero_item_hints_glow 2s cubic-bezier(0.25, 0.1, 0.2, 1) infinite;
+                    -webkit-transition: opacity 0.5s ease;
+                    transition: opacity 0.5s ease;
+                }
+
+        @@keyframes home_hero_item_hints_glow {
+            0% {
+                -webkit-box-shadow: 0 0 30px 5px #48aa48;
+                box-shadow: 0 0 30px 5px #48aa48;
+            }
+
+            70% {
+                -webkit-box-shadow: 0 0 70px 50px rgba(72, 170, 72, 0);
+                box-shadow: 0 0 70px 50px rgba(72, 170, 72, 0);
+            }
+
+            100% {
+                -webkit-box-shadow: 0 0 0 50px rgba(72, 170, 72, 0);
+                box-shadow: 0 0 0 50px rgba(72, 170, 72, 0);
+            }
+        }
+
+        @@keyframes home_hero_item_hints_glow {
+            0% {
+                -webkit-box-shadow: 0 0 30px 5px #48aa48;
+                box-shadow: 0 0 30px 5px #48aa48;
+            }
+
+            70% {
+                -webkit-box-shadow: 0 0 70px 50px rgba(72, 170, 72, 0);
+                box-shadow: 0 0 70px 50px rgba(72, 170, 72, 0);
+            }
+
+            100% {
+                -webkit-box-shadow: 0 0 0 50px rgba(72, 170, 72, 0);
+                box-shadow: 0 0 0 50px rgba(72, 170, 72, 0);
+            }
+        }
+
+        .item-hints .hint-dot {
+            z-index: 3;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: block;
+            -webkit-transform: translate(-0%, -0%) scale(0.95);
+            transform: translate(-0%, -0%) scale(0.95);
+            -webkit-animation: home_hero_item_hints_border 2s linear infinite;
+            animation: home_hero_item_hints_border 2s linear infinite;
+            margin: auto;
+        }
+
+        @@keyframes home_hero_item_hints_border {
+            0%,
+            100% {
+                border-color: rgba(255, 255, 255, 0.6);
+                -webkit-transform: translate(-50%, -50%) scale(0.95);
+                transform: translate(-0%, -0%) scale(0.95);
+            }
+
+            50% {
+                border-color: rgba(255, 255, 255, 0.3);
+                -webkit-transform: translate(-50%, -50%) scale(1);
+                transform: translate(-0%, -0%) scale(1);
+            }
+        }
+
+        @@keyframes home_hero_item_hints_border {
+            0%,
+            100% {
+                border-color: rgba(255, 255, 255, 0.6);
+                -webkit-transform: translate(-50%, -50%) scale(0.95);
+                transform: translate(-0%, -0%) scale(0.95);
+            }
+
+            50% {
+                border-color: rgba(255, 255, 255, 0.3);
+                -webkit-transform: translate(-50%, -50%) scale(1);
+                transform: translate(-0%, -0%) scale(1);
+            }
+        }
+
+        .item-hints .hint-radius {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -125px 0 0 -125px;
+            opacity: 0;
+            visibility: hidden;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            -webkit-transition-property: background-color, opacity, visibility, -webkit-transform;
+            transition-property: background-color, opacity, visibility, -webkit-transform;
+            transition-property: background-color, opacity, visibility, transform;
+            transition-property: background-color, opacity, visibility, transform, -webkit-transform;
+            -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+            -webkit-transition-timing-function: ease, ease, ease, cubic-bezier(0.5, 0, 0, 1);
+            transition-timing-function: ease, ease, ease, cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .item-hints .hint:hover .hint-radius {
+            opacity: 1;
+            visibility: visible;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+
+        .item-hints .hint[data-position="1"] .hint-content {
+            top: 85px;
+            left: 50%;
+            margin-left: 56px;
+        }
+
+        .item-hints .hint-content {
+            color: #fff;
+            width: 300px;
+            position: absolute;
+            z-index: 5;
+            padding: 12px 0;
+            opacity: 0;
+            visibility: hidden;
+            -webkit-transition: opacity 0.7s ease, visibility 0.7s ease;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+            pointer-events: none;
+            color: #fff;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .item-hints .hint:hover .hint-content {
+            color: #fff;
+            width: 300px;
+            position: absolute;
+            z-index: 5;
+            padding: 12px 0;
+            opacity: 1;
+            visibility: visible !important;
+            -webkit-transition: opacity 0.7s ease, visibility 0.7s ease;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+            pointer-events: none;
+            color: #fff;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .item-hints .hint-content::before {
+            width: 0px;
+            bottom: 0;
+            left: 0;
+            content: "";
+            background-color: #fff;
+            height: 1px;
+            position: absolute;
+            transition: width 0.4s;
+        }
+
+        .item-hints .hint:hover .hint-content::before {
+            width: 180px;
+            transition: width 0.4s;
+        }
+
+        .item-hints .hint-content::after {
+            -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+            -webkit-transform: rotate(-225deg);
+            transform: rotate(-225deg);
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            content: "";
+            background-color: #fff;
+            height: 1px;
+            position: absolute;
+            opacity: 1;
+            -webkit-transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease;
+            transition-delay: 0s;
+            -webkit-transition-delay: 0s;
+            transition-delay: 0s;
+        }
+
+        .item-hints .hint:hover .hint-content::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .item-hints .hint[data-position="4"] .hint-content {
+            bottom: 85px;
+            left: 50%;
+            margin-left: 56px;
+        }
+        .btn-deviator-grp {
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+           
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+           
+            margin: auto;
+            padding: 20px;
+            top: 15pc;
+            border-radius:50%;
+            border: 3px solid black;
+            width: 10%;
+            height: 15pc;
+            font-size: large;
+        }
+        .circle {
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            opacity: 0;
+            animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+        }
+        @@keyframes scaleIn {
+            from {
+                transform: scale(.5, .5);
+                opacity: .5;
+            }
+
+            to {
+                transform: scale(2.5, 2.5);
+                opacity: 0;
+            }
+        }
+  
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="head">Shop Floor in Palm</h1>
+        <div class="row">
+            <div class="col">
+                <div id="gasStation_sketch_container"></div>
+            </div>
+        </div>
+
+       
+
+        <div id="myModal" class="modal">
+
+
+            <div class="modal-content" id="alert" style="height:10pc;">
+
+
+                <span id="close" class="close">&times;</span>
+                <h1 style="font-size:large;font-weight:700;margin-left:10%" id="cid"></h1>
+                <h1 style="font-size:large;font-weight:700;margin-left:10%" id="lcount"></h1>
+            </div>
+        </div>
+    </div>
+        <script src="../assets/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" integrity="sha512-Tn2m0TIpgVyTzzvmxLNuqbSJH3JP8jm+Cy3hvHrW7ndTDcJ1w5mBiksqDBb8GpE2ksktFvDB/ykZ0mDpsZj20w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="../assets/configVariale_GasStation.js"></script>
+        <script src="../assets/gas_station.js"></script>
+
+
+
+        <script>
+            $(document).ready(function () {
+
+                $(document).ready(function () {
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                });
+
+                let opt = {
+                    title: null,
+                    html: true,
+                    trigger: 'manual',
+
+                    template: `<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner h4 "></div></div>`
+                }
+                $.get(svgLargeFileLocation, function (data) {
+                    $("#gasStation_sketch_container").html(data.documentElement);
+
+                    const tooltipTriggerList = document.querySelectorAll('.counter-group')
+                    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
+                        ...opt,
+                        title: tooltipTriggerEl.id,
+                        customClass: `custom-tooltip ${tooltipTriggerEl.id}`,
+                    }));
+
+                    $(".counter-group").tooltip('show');
+                    $(".counter-group").mouseover(function () {
+                        let devicehead, ids;
+
+                        $(".tooltip." + this.id).removeClass("custom-tooltip").addClass("custom-tooltip-bg")
+                        $(".tooltip." + this.id + " .tooltip-inner").removeClass("py-0 px-1 h4").addClass("h1")
+                        document.getElementById("alert").style.border = "1px solid white";
+                        document.getElementById("alert").style.color = "white";
+                        document.getElementById("alert").style.backgroundColor = "white";
+                        document.getElementById("alert").style.background = "white";
+                        shopdatas.forEach((obj) => {
+                            ids = this.id.replace("g0", "");
+
+
+                            if (ids.length == 2) {
+                                devicehead = "g0";
+
+                            }
+                            else
+                                devicehead = "g";
+                            // alert(devicehead + obj.deviceid);
+
+                            if (devicehead + obj.deviceid == this.id) {
+                                document.getElementById('lcount').innerHTML = "LC:" + obj.livecount;
+                                document.getElementById('cid').innerHTML = "IP:" + obj.deviceid;
+                                show_popuptext("#"+devicehead + obj.deviceid, "9876", obj.loadCarosel, 1);
+                            }
+
+                           
+
+
+                        });
+
+                        $(".counter-group").mouseout(function () {
+                            $(".tooltip." + this.id).removeClass("custom-tooltip-bg").addClass("custom-tooltip")
+                            $(".tooltip." + this.id + " .tooltip-inner").addClass("py-0 px-1 h4").removeClass("h1");
+                            shopdatas.forEach((obj) => {
+                                ids = this.id.replace("g0", "");
+
+
+                                if (ids.length == 2) {
+                                    devicehead = "g0";
+
+                                }
+                                else
+                                    devicehead = "g";
+                                // alert(devicehead + obj.deviceid);
+
+                                if (devicehead + obj.deviceid == this.id) {
+                                    document.getElementById('lcount').innerHTML = "LC:" + obj.livecount;
+                                    document.getElementById('cid').innerHTML = "IP:" + obj.deviceid;
+                                    show_popuptextout("#" + devicehead + obj.deviceid, "0", obj.loadCarosel, 1);
+                                }
+
+                            });
+
+                        });
+                        //var modal = document.getElementById("myModal");
+                        //modal.style.display = "block";
+                      
+                        
+                        //var h1Elements = document.getElementsByClassName("tooltip-inner");
+                        //for (var i = 0; i < h1Elements.length; i++) {
+                        //    h1Elements[i].style.color = "transparent";
+                        //}
+                    });
+                    
+
+                    $(".btn-deviator-grp").click(function () {
+                        //$(this).hide();
+
+                        //alert(this.id);
+                        //let id = this.id;
+                        //id = id.slice(4, id.length);
+                        //console.error("id check", id);
+                        //    loaddirection(this.id.slice(0, id));
+                    })
+
+
+
+
+
+                    $(".d-counter").click(function () {
+                        $(this).show();
+
+                        //alert(this.id);
+                        //                    let id = this.id;
+                        //                  id = id.slice(4, id.length);
+                        loaddirection(this.id);
+                    })
+
+
+                    loadCarosel();
+                    loadFloorData();
+                    loadtruckData();
+                   
+                    setInterval(function () {
+
+                        var modal = document.getElementById("myModal");
+                        if (modal.style.display != 'block') {
+
+                            loadCarosel();
+                            loadFloorData();
+                            loadtruckData();
+                        }
+                        }, (intervalSec * 1000));
+
+                });
+            
+            });
+            $('#close').click(function (e) {
+                var modal = document.getElementById("myModal");
+                modal.style.display = "none";
+                var h1Elements = document.getElementsByClassName("tooltip-inner");
+
+                for (var i = 0; i < h1Elements.length; i++) {
+                    h1Elements[i].style.color = "#000";
+                }
+            });
+        </script>
+</body>
+
+</html>

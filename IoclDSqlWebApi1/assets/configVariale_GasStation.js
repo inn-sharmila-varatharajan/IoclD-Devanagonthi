@@ -1,0 +1,9 @@
+let intervalSec = 30;
+let svgFileLocation = "../assets/gas_station.svg";
+let svgLargeFileLocation = "../assets/gas_station.svg";
+let api_carosel_rph = "https://localhost:44345/api/GetCardController/GetRPHValues/"; // need to pass date in end
+let api_carosel_rph_sampleData = [{"rph":5564,"status":"0","carousel":1},{"rph":-1769,"status":"2","carousel":3},{"rph":4061,"status":"0","carousel":2},{"rph":10672,"status":"0","carousel":4}]
+let api_deviceDetail = "https://localhost:44345/api/GetCardController/GetDeviceid1/";  // need to pass date in end
+let api_floorData = "https://localhost:44345/api/GetCardController/GetShopFloorDatas/"
+let api_truckData = "https://localhost:44345/api/GetDashboardController/GetTruckDeatils/";
+let api_loaddirection = "https://localhost:44345/api/GetCardController/GetDiverterdirection/";

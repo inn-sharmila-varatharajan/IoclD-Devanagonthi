@@ -1,0 +1,466 @@
+﻿@{
+    ViewBag.Title = "settings";
+}
+
+
+
+   
+
+    <style>
+        body {
+            margin-top: 20px;
+            background: #FAFAFA;
+          
+        }
+
+        .order-card {
+            color: #000;
+        }
+
+        .bg-c-blue {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-green {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-yellow {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-pink {
+            background-color: #f1f1f1;
+        }
+
+
+        .card {
+            border-radius: 5px;
+            height: 220px;
+          
+            -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            border: none;
+            margin-bottom: 30px;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .card .card-block {
+                padding: 20px;
+            }
+
+        .order-card i {
+            font-size: 26px;
+        }
+
+        .f-left {
+            float: left;
+        }
+
+        .f-right {
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .column {
+            float: left;
+            width: 10%;
+            border: 1px solid black;
+            height: 50px;
+            margin: 1px 0px 2px 1px;
+            background-color: red;
+            opacity: 0.6
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .circle {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            margin-left: 50%;
+            animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+        }
+
+        @@keyframes scaleIn {
+            from {
+                transform: scale(.5, .5);
+                opacity: .5;
+            }
+
+            to {
+                transform: scale(2.5, 2.5);
+                opacity: 0;
+            }
+        }
+
+        .c3blk {
+            opacity: 0.1;
+            z-index: 2;
+            position: relative;
+        }
+
+        .c3opa {
+            position: fixed;
+            Color: black;
+            z-index: 1;
+        }
+
+        .rectangle {
+            height: 50px;
+            width: 100px;
+            border: 1px solid;
+            position: relative;
+            top: 60px;
+            left: 30px;
+        }
+
+        .Set {
+            position: relative;
+            left: 145px;
+            bottom: -20px;
+        }
+
+        .kit {
+            width: 80px;
+            height: 40px;
+            background-color: cornflowerblue;
+            border: 1px solid;
+            margin-top:10px;
+           position: relative;
+            left: 140px;
+            bottom: -10px;
+            font-weight:bold;
+            font-size:18px;
+        }
+    </style>
+
+
+<body>
+    <div id="row" style="width:95%;">
+        <div class="f-left">
+            <h1  style="font-weight:bold;">
+                Settings  
+            </h1>
+        </div>
+        <div class="f-right">
+            <h1 class="m-b-0" style="font-weight:bold;">
+                Overall Production Count:  <span id="overallcount"></span>
+            </h1>
+        </div>
+        <br />
+        <br />
+        <div id="content" class="p-4">
+
+            <div class="row">
+                @*<div class="col-md-4 col-xl-3 col-xs-3">
+            <div class="card bg-c-blue order-card">
+                <div class="card-block">
+                    <h2 class="m-b-0" style="font-weight:bold;">
+                        Overall Production Count
+                    </h2>
+                    <p class="m-b-0">Current target count <span class="f-right" id="overallcount">150000</span></p>
+                    <p class="m-b-0">
+                        Set target count<span class="f-right" id="unloadcount">
+                            <input class="col-sg-9" id="overallstandard" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                        </span>
+                    </p>
+                    <button class="kit" onclick="set(document.getElementById('overallstandard').value,'200')">set</button>
+                </div>
+            </div>
+        </div>*@
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Carousel 1</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="c1count">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right" id="unloadcount">
+                                    <input class="col-sg-9" id="c1standard" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="set(document.getElementById('c1standard').value,'028')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Carousel 2</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="c2count">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right" id="unloadcount">
+                                    <input class="col-sg-9" id="c2standard" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="set(document.getElementById('c2standard').value,'022')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Carousel 3</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="c3count">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right" id="unloadcount">
+                                    <input class="col-sg-9" id="c3standard" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="set(document.getElementById('c3standard').value,'021')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Carousel 4</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="c4count">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right" id="unloadcount">
+                                    <input class="col-sg-9" id="c4standard" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="set(document.getElementById('c4standard').value,'053')">set</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Loading Truck Count Per/Hour</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="load1">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right">
+                                    <input class="col-sg-9" id="loadtruckcount" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="settruck(document.getElementById('loadtruckcount').value,'2')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Unloading Truck Count Per/Hour</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="load2">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right">
+                                    <input class="col-sg-9" id="11" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="settruck(document.getElementById('11').value,'1')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Truck Occupancy Duration(in min)</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="durationset">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right">
+                                    <input class="col-sg-9" id="duration" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="settruck(document.getElementById('duration').value,'3')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-3 col-xs-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h2 style="font-weight:bold;">Truck UnOccupancy Duration(in min)</h2>
+                            <p class="m-b-0">Current target count <span class="f-right" id="undurationset">150000</span></p>
+                            <p class="m-b-0">
+                                Set target count<span class="f-right">
+                                    <input class="col-sg-9" id="unduration" style="width:150px;font-family:'Comic Sans MS'" type="number" />
+                                </span>
+                            </p>
+                            <button class="kit" onclick="settruck(document.getElementById('unduration').value,'4')">set</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+@section scripts
+    {
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <!-- CSS only -->
+    <script type="text/javascript">
+         let selecteddate,selectedevice;
+           var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+        $(document).ready(function () {
+
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+            selecteddate = today;
+            GetTargetcount(today);
+            GetTargettruckcount();
+       
+
+        });
+
+        function settruck(value, deviceid) {
+
+            let url = weburl + "api/GetSettingsController/Settruckvalue/" + value + "/" + deviceid;
+            axios.get(url).then
+                (data => {
+                    console.log(data.data);
+
+                    alert("Value updated successfully");
+                    GetTargettruckcount();
+                    document.getElementById('11').value = "";
+                    document.getElementById('loadtruckcount').value = "";
+                    document.getElementById('duration').value = "";
+                    document.getElementById('unduration').value = "";
+                    //if (data.data == 1) {
+                    //    //    onchangeddetails(selecteddate, selectedevice);
+                    //    getaveragevalues(selecteddate, selectedevice);
+                    //}
+
+
+                }).catch(err => alert(err))
+        }
+
+        function set(value,deviceid) {
+
+            let url = weburl + "api/GetSettingsController/Setvalue/" + value + "/" + deviceid;
+            axios.get(url).then
+                (data => {
+                    console.log(data.data);
+                    
+                    alert("Value updated successfully");
+                    GetTargetcount(selecteddate);
+                  
+                    document.getElementById("c1standard").value = "";
+                    document.getElementById("c2standard").value = "";
+                    document.getElementById("c3standard").value = "";
+                    document.getElementById("c4standard").value = "";
+
+
+
+                    //if (data.data == 1) {
+                    //    //    onchangeddetails(selecteddate, selectedevice);
+                    //    getaveragevalues(selecteddate, selectedevice);
+                    //}
+
+
+                }).catch(err => alert(err))
+        }
+        async function GetTargetcount(value) {
+
+            let url = weburl + "api/GetSettingsController/GetTargetValue/" + value;
+            //let url = " http://188.42.97.98:90/api/GetCardController/GetRPHValues/2022-08-09 ";
+
+            axios.get(url).then
+
+                (data => {
+
+                  
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+
+                    for (var i = 0; i < data.data.length; i++) {
+                        let obj = data.data[i];
+                        if (obj.device == 1) {
+                            document.getElementById('c1count').innerHTML = numberWithCommas(obj.targetcount);
+                        }
+                        else if (obj.device == 2) {
+                            document.getElementById('c2count').innerHTML = numberWithCommas(obj.targetcount);
+                        }
+                        else if (obj.device == 3) {
+                            document.getElementById('c3count').innerHTML = numberWithCommas(obj.targetcount);
+                        }
+                        else if (obj.device == 4) {
+                            document.getElementById('c4count').innerHTML = numberWithCommas(obj.targetcount);
+                        } else if (obj.device == 5) {
+                            document.getElementById('overallcount').innerHTML = numberWithCommas(obj.targetcount);
+                        }
+
+
+                    
+                    }
+                }).catch(err => alert(err));
+
+
+
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        async function GetTargettruckcount() {
+
+            let url = weburl + "api/GetSettingsController/Gettruckcount/" ;
+            //let url = " http://188.42.97.98:90/api/GetCardController/GetRPHValues/2022-08-09 ";
+
+            axios.get(url).then
+
+                (data => {
+
+
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+
+                    for (var i = 0; i < data.data.length; i++) {
+                        let obj = data.data[i];
+                        if (obj.device == 2) {
+                            document.getElementById('load1').innerHTML = numberWithCommas( obj.targetcount);
+                        }
+                        else if (obj.device == 1) {
+                            document.getElementById('load2').innerHTML = numberWithCommas(obj.targetcount);
+                        }
+                        else if (obj.device==4) {
+                            document.getElementById('undurationset').innerHTML = numberWithCommas(obj.targetcount);
+                            
+                        }
+                        else {
+                            document.getElementById('durationset').innerHTML = numberWithCommas(obj.targetcount);
+                        }
+
+
+
+                    }
+                }).catch(err => alert(err));
+
+
+
+        }
+
+     
+
+    </script>
+
+}

@@ -1,0 +1,299 @@
+﻿@{
+
+}
+<head>
+
+
+    <style>
+
+        .card {
+            border: 1px solid grey;
+            position: absolute;
+            left: 20pc;
+            top: 15pc;
+            font-size: large;
+            min-width: 50%;
+        }
+
+        .card2 {
+            border: 1px solid grey;
+            position: absolute;
+            left: 20pc;
+            top: 10pc;
+            font-size: small;
+            min-width: 50%;
+        }
+
+        .card1 {
+            border: 1px solid grey;
+            border-radius: 10px;
+            font-size: large;
+        }
+
+        .form-control {
+            font-size: initial;
+        }
+
+        .btn-primary {
+            font-size: initial;
+        }
+
+        .btn-secondary {
+            font-size: initial;
+        }
+
+        .btn-danger {
+            font-size: initial;
+        }
+
+        @@media screen and (min-width: 0px) and (max-width: 1000px) {
+            .card {
+                left: 6pc;
+            }
+        }
+
+        .modal {
+            position: fixed; /* Stay in place */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            top: 7pc;
+        }
+
+        .f-left {
+            float: left;
+            margin-left: 0%;
+            margin-top: 30px;
+        }
+
+        .f-right {
+            margin-right: 10%;
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .divTable {
+            display: table;
+           width:55%;
+            margin-top:10%;
+            margin-left:15%;
+        }
+
+        .divTableRow {
+            display: table-row;
+        }
+
+        .divTableHeading {
+            background-color: #EEE;
+            display: table-header-group;
+        }
+
+        .divTableCell, .divTableHead {
+            border: 1px solid #999999;
+            display: table-cell;
+            padding: 3px 10px;
+        }
+
+        .divTableHeading {
+            background-color: #EEE;
+            display: table-header-group;
+            font-weight: bold;
+        }
+
+        .divTableFoot {
+            background-color: #EEE;
+            display: table-footer-group;
+            font-weight: bold;
+        }
+
+        .divTableBody {
+            display: table-row-group;
+        }
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.75) url(../assets/loader.gif) no-repeat center center;
+            z-index: 10000;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="row" style="margin-left:5%;">
+        <h1 style="font-weight:bold;">
+            Enable/Disable
+        </h1>
+    </div>
+    
+     
+
+     
+    <div class="card2" id="getheader">
+        <div style="margin-left:5% ; margin-top:10px" class="d-flex justify-content-start">
+
+            <p>Carousel</p>
+            <div class="dropdown mt-2 col-md-2">
+
+                <select name="Devices" id="Devices">
+                    <option value="1">Carousel 1</option>
+                    <option value="2">Carousel 2</option>
+                    <option value="3">Carousel 3</option>
+                    <option value="4">Carousel 4</option>
+                  
+                </select>
+
+
+            </div>
+            <div class="dropdown mt-2 col-md-2">
+                <select name="Carousel" id="Carousel">
+                    <option value="Counter">Counter</option>
+                    <option value="Annunciator">Annunciator</option>
+                    <option value="All">All</option>
+                   
+                </select>
+                </div>
+                <div class="dropdown mt-2 col-md-2">
+
+                    <select name="Devicetype" id="Devicetype">
+                        <option value="Enable">Enable</option>
+                        <option value="Disable">Disable</option>
+                    </select>
+                </div>
+               
+
+                <div class="btn-group  col-md-1">
+                    <button type="submit" style="margin-bottom: 10px;" value="Submit" onclick="submitclick()">Submit</button>
+                </div>
+
+            </div>
+            @*<input id="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" />
+        <button class="btn btn-success" name="submit" id="csvsubmit" type="submit"> Upload File </button>*@
+        </div>
+    <div class="divTable" style="border: 1px solid #000;">
+        <div class="divTableBody">
+            <div class="divTableRow">
+                <div class="divTableCell h3">Carousel</div>
+                <div class="divTableCell h3">Counter’s Status</div>
+                <div class="divTableCell h3">Annunciator Status</div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Carousel  1</div>
+                <div class="divTableCell" id="c1c"></div>
+                <div class="divTableCell" id="c1a"></div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Carousel  2</div>
+                <div class="divTableCell" id="c2c">&nbsp;</div>
+                <div class="divTableCell" id="c2a">&nbsp;</div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Carousel  3</div>
+                <div class="divTableCell" id="c3c">&nbsp;</div>
+                <div class="divTableCell" id="c3a">&nbsp;</div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Carousel  4</div>
+                <div class="divTableCell" id="c4c">&nbsp;</div>
+                <div class="divTableCell" id="c4a">&nbsp;</div>
+            </div>
+        </div>
+        <div id="loader"></div>
+    </div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    var weburl = '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+   
+    let carousel = "Counter",devices="1",devicetype="Enable";
+    var spinner = $('#loader');
+   
+    function submitclick() {
+        spinner.show().delay("30000");
+        GetDevicesttaus(devices, carousel, devicetype);
+    }
+
+
+
+    $('#Devices').change(function () {
+        var selectedvalue = this.value;
+        devices = selectedvalue;
+       
+       
+       
+    });
+
+    $('#Devicetype').change(function () {
+        var selectedvalue = this.value;
+        devicetype = selectedvalue;
+
+    });
+  
+    $('#Carousel').change(function () {
+        var selectedvalue = this.value;
+        carousel = selectedvalue;
+   
+    });
+    GetDevicesttaus("0","0","Disabled");
+    spinner.show();
+    async function GetDevicesttaus(devices,carousel,devicetype) {
+
+        let url = weburl + "api/GetDeviceController/Getstatus/" + devices + "/" + carousel + "/" + devicetype;
+
+        axios.get(url).then
+
+            (data => {
+
+               
+                if (data.data.length == 0) {
+
+                    return;
+
+                }
+                var optionsAsString = "";
+                for (var i = 0; i < data.data.length; i++) {
+                    spinner.hide();
+                    let obj = data.data[i];
+                    let j = i + 1;
+                    let cid = "c" + j + "c";
+                    let aid = "c" + j + "a";
+                   
+                    if (obj['counterstatus'] == "Enabled") {
+                        document.getElementById(cid).innerHTML = obj['counterstatus'];
+                        document.getElementById(cid).classList.add('text-success');
+                    }
+                    if (obj['counterstatus'] == "Disabled") {
+                        document.getElementById(cid).innerHTML = obj['counterstatus'];
+                        document.getElementById(cid).classList.add('text-danger');
+                    }
+                    if (obj['annunstatus'] == "Enabled") {
+                        document.getElementById(aid).innerHTML = obj['annunstatus'];
+                        document.getElementById(aid).classList.add('text-success');
+                    }
+                    if (obj['annunstatus'] == "Disabled") {
+                        document.getElementById(aid).innerHTML = obj['annunstatus'];
+                        document.getElementById(aid).classList.add('text-danger');
+                    }
+                }
+   
+            }).catch(err => alert(err));
+
+
+
+    }
+
+
+
+   
+
+
+   
+    
+</script>

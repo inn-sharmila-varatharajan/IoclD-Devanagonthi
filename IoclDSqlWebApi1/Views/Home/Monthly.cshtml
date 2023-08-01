@@ -1,0 +1,706 @@
+﻿
+@{
+    ViewBag.Title = "Monthly";
+}
+
+
+    <style>
+        body {
+            margin-top: 20px;
+            background: #FAFAFA;
+        }
+
+        .order-card {
+            color: #000;
+        }
+
+        .bg-c-blue {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-green {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-yellow {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-pink {
+            background-color: #f1f1f1;
+        }
+        .card {
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            border: none;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .card .card-block {
+                padding: 25px;
+            }
+
+        .order-card i {
+            font-size: 26px;
+        }
+
+        .f-left {
+            float: left;
+        }
+
+        .f-right {
+            float: right;
+        }
+
+        .column {
+            float: left;
+            width: 10%;
+            border: 1px solid black;
+            height: 50px;
+            margin: 1px 0px 2px 1px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        table {
+            border-collapse: collapse;
+        }
+
+        tr {
+            border-bottom: 1pt solid black;
+            background: #fafafa;
+        }
+
+            tr:nth-child(even) {
+                background-color: #D6EEEE;
+            }
+    </style>
+    <style type="text/css">
+        .paging-nav {
+            text-align: right;
+            padding-top: 2px;
+        }
+
+            .paging-nav a {
+                margin: auto 1px;
+                text-decoration: none;
+                display: inline-block;
+                padding: 1px 7px;
+                background: #03174f;
+                color: white;
+                border-radius: 3px;
+            }
+
+            .paging-nav .selected-page {
+                background: #03174f;
+                font-weight: bold;
+            }
+
+        .paging-nav,
+        #Table {
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .divpadding {
+            border: 3px solid green;
+        }
+    </style>
+
+    <style type="text/css">
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.75) url(../assets/loader.gif) no-repeat center center;
+            z-index: 10000;
+        }
+        .pg-normal {
+            color: #ffffff;
+            font-size: 15px;
+            cursor: pointer;
+            background: #03174f;
+            padding: 2px 4px 2px 4px;
+        }
+        .pg-selected {
+            color: #000;
+            font-size: 15px;
+            background: #ffffff;
+            padding: 2px 4px 2px 4px;
+        }
+        table.yui {
+            font-family: arial;
+            border-collapse: collapse;
+            border: solid 1px #03174f;
+            font-size: small;
+        }
+
+            table.yui td {
+                padding: 5px;
+                border-right: solid 1px #03174f;
+            }
+
+        table {
+            border-collapse: collapse;
+        }
+
+            table td {
+                padding: 0.5rem;
+                border: 1px solid #fff;
+            }
+
+        .dropdown {
+            z-index: 1;
+        }
+    </style>
+
+    <style>
+        @@keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+
+        .spin::before {
+            animation: 1.5s linear infinite spinner;
+            animation-play-state: inherit;
+            border: solid 5px #cfd0d1;
+            border-bottom-color: #1c87c9;
+            border-radius: 50%;
+            content: "";
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            transform: translate3d(-50%, -50%, 0);
+            will-change: transform;
+        }
+
+        .justify-content-start {
+            position: absolute;
+            margin-top: 55px;
+            margin-left: 15px;
+        }
+
+        .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+        .form-control{
+            font-size:16px;
+        }
+        #btnExport{
+            width:35px;
+            position:relative;
+            top:5px;
+        }
+    </style>
+
+<body>
+    <div class="row mb-5 justify-content-center" style="margin-top:50px;">
+        <div class="col-lg-9 col-xl-6">
+            <div class="card">
+                <h2 class="card-header fw-bolder iocl-blue-text">
+                    Carousel Monthly Report
+                </h2>
+
+                <div class="d-flex justify-content-start">
+
+                    <div class="btn-group">
+                        <input class="form-control" name="datepicker" type="text" id="datechangeMonthly">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <div class="btn-group float-end">
+                        <image src="../assets/excel.png" id="btnExport" onclick="exportReportToExcel(this)"></image>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <image src="../assets/pdf.png" id="btnExport" onclick="pdf()"></image>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col">
+                    <table id="Table1" hidden style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                        <thead id="reporthead1">
+                            <tr align="left" style="background-color:#004080;color:White;">
+                                <td>S.No</td>
+                                <td>Month</td>
+
+                                <td>Carousel Type</td>
+                                <td>Count</td>
+                            </tr>
+
+                        <tbody id="reportdatas1"></tbody>
+                    </table>
+                    <table id="Table" style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                        <thead id="reporthead">
+                            <tr align="left" style="background-color:#004080;color:White;">
+                                <td>S.No</td>
+                                <td>Month</td>
+
+                                <td>Carousel Type</td>
+                                <td>Count</td>
+                            </tr>
+                        <tbody id="reportdatas"></tbody>
+                    </table>
+                </div>
+                <div id="pageNavPosition" style="padding-top: 20px" align="center"></div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+        </div>
+    </div>
+
+    <div id="loader"></div>
+    <script src="../assets/script/svg-template.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/cesiumjs/1.78/Build/Cesium/Cesium.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js" />
+    <script src="../Scripts/table2excel.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+    <script src="../Scripts/table2excel.js"></script>
+
+    <script src="../Scripts/tableHTMLExport.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        let docdefinition = "";
+        var pager = new Pager('Table', 10);
+        var spinner = $('#loader');
+        var months = new Array();
+        var startdate, enddate;
+        var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+        months[0] = "January";
+        months[1] = "February";
+        months[2] = "March";
+        months[3] = "April";
+        months[4] = "May";
+        months[5] = "June";
+        months[6] = "July";
+        months[7] = "August";
+        months[8] = "September";
+        months[9] = "October";
+        months[10] = "November";
+        months[11] = "December";
+        var monthsint = new Array();
+        monthsint["January"] = 1;
+        monthsint["February"] = 2;
+        monthsint["March"] = 3;
+        monthsint["April"] = 4;
+        monthsint["May"] = 5;
+        monthsint["June"] = 6;
+        monthsint["July"] = 7;
+        monthsint["August"] = 8;
+        monthsint["September"] = 9;
+        monthsint["October"] = 10;
+        monthsint["November"] = 11;
+        monthsint["December"] = 12;
+        var month11 = "";
+        let aryx = [], aryy = [];
+        var barColors = ["#03174f", "#03174f", "#03174f","#03174f"];
+        $(document).ready(function () {
+            var now = new Date();
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var month1 = months[now.getMonth()];
+            startdate = now.getFullYear() + "-" + (month) + "-" + "01";
+            enddate = now.getFullYear() + "-" + (month) + "-" + (day);
+            month11 = months[now.getMonth()];
+            var today = month1 + "," + now.getFullYear();
+            $('#datechangeMonthly').val(today);
+            Getproductioncount(enddate);
+            spinner.show();
+
+        });
+        $("#datechangeMonthly").datepicker({
+            format: "MM,yyyy",
+            startView: "months",
+            minViewMode: "months",
+            autoclose: true
+
+        });
+
+        $('#datechangeMonthly').change(function () {
+            var now = new Date();
+
+            var selecteddate = this.value;
+            var month = selecteddate.split(",");
+            month11 = month[0];
+            startdate = now.getFullYear() + "-" + (month) + "-" + "01";
+            enddate = now.getFullYear() + "-" + (month) + "-" +"31";
+            spinner.show();
+            Getproductioncount(selecteddate, "01");
+        });
+
+        async function Getproductioncount(value) {
+
+            let url = weburl + "api/GetReportController/GetMonthly/" + value ;
+            //let url = " http://188.42.97.98:90/api/GetCardController/GetRPHValues/2022-08-09 ";
+
+            axios.get(url).then
+                (data => {
+                    aryy = [];
+                    aryx = [];
+                    console.log(data.data);
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    let rowhtml = "";
+                    spinner.hide();
+                    if (data.data.length == 0) {
+
+
+                        document.getElementById("reportdatas").innerHTML = "No Datas";
+                        return;
+                    }
+
+                    for (i = 0; i < data.data.length; i++) {
+                        let obj = data.data[i];
+                        aryx.push(obj.device);
+                        aryy.push(obj.count);
+                        rowhtml += `<tr><td>${i + 1}</td><td>${month11}</td>
+
+<td>${obj.device}</td><td>${numberWithCommas( obj.count)}</td></tr>
+`;
+                        document.getElementById("reportdatas").innerHTML = rowhtml;
+                        document.getElementById("reportdatas1").innerHTML = rowhtml;
+                    }
+                    chart();
+                    pager.init();
+                    pager.showPageNav('pager', 'pageNavPosition');
+                    pager.showPage(1);
+
+                }).catch(err => alert(err));
+        }
+
+        function chart() {
+            new Chart("myChart", {
+                type: "bar",
+                data: {
+                    labels: aryx,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: aryy
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'No.of Bottles',
+                                fontSize:20
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Carousel',
+                                fontSize:20
+
+                            }
+                        }]
+
+                    },
+                    title: {
+                        display: true,
+                        text: "Month Wise Report"
+                    }
+                }
+            });
+        }
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function pdf() {
+            var doc = new jsPDF(this.pdfOrientation, 'pt', this.pdfFormat);
+            var res = doc.autoTableHtmlToJson(document.getElementById("Table1"));
+            doc.autoTable(res.columns, res.data, {
+                margin: { top: 40, horizontal: 10 }, startY: false, theme: 'grid', pageBreak:
+                    'always', tableWidth: 'auto', columnWidth: 'wrap', showHeader: 'everyPage',
+                tableLineColor: 200, tableLineWidth: 0,
+                columnStyles: {
+                    0: { columnWidth: 'auto' }, 1: { columnWidth: 'auto' }, 2: { columnWidth: 'auto' }, 3:
+                        { columnWidth: 'auto' }, 4: { columnWidth: 'auto' },
+                    5: { columnWidth: 'auto' }, 6: { columnWidth: 'auto' }, 7: { columnWidth: 'auto' }, 8:
+                        { columnWidth: 'auto' }
+                },
+                headerStyles: { theme: 'grid' },
+                styles: {
+                    overflow: 'linebreak', columnWidth: 'wrap', font: 'arial', fontSize: 10,
+                    cellPadding: 8, overflowColumns: 'linebreak'
+                },
+            });
+            doc.save('Report.pdf');
+        }
+        function exportReportToExcel() {
+            var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange; var j = 0;
+            tab = document.getElementById('Table'); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+            {
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            }
+            else                 //other browser not tested on IE 11
+                sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+            return (sa);
+        }
+        function tableToCSV() {
+
+            // Variable to store the final csv data
+            var csv_data = [];
+
+            // Get each row data
+            var rows = document.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+
+                // Get each column data
+                var cols = rows[i].querySelectorAll('td,th');
+
+                // Stores each csv row data
+                var csvrow = [];
+                for (var j = 0; j < cols.length; j++) {
+
+                    // Get the text data of each cell
+                    // of a row and push it to csvrow
+                    csvrow.push(cols[j].innerHTML);
+                }
+
+                // Combine each column value with comma
+                csv_data.push(csvrow.join(","));
+            }
+
+            // Combine each row data with new line character
+            csv_data = csv_data.join('\n');
+
+            // Call this function to download csv file
+            downloadCSVFile(csv_data);
+        }
+        function downloadCSVFile(csv_data) {
+
+            // Create CSV file object and feed
+            // our csv_data into it
+            CSVFile = new Blob([csv_data], {
+                type: "text/csv"
+            });
+
+            // Create to temporary link to initiate
+            // download process
+            var temp_link = document.createElement('a');
+
+            // Download csv file
+            temp_link.download = "Report.csv";
+            var url = window.URL.createObjectURL(CSVFile);
+            temp_link.href = url;
+
+            // This link should not be displayed
+            temp_link.style.display = "none";
+            document.body.appendChild(temp_link);
+
+            // Automatically click the link to
+            // trigger download
+            temp_link.click();
+            document.body.removeChild(temp_link);
+        }
+
+        function Pager(tableName, itemsPerPage) {
+
+            this.tableName = tableName;
+
+            this.itemsPerPage = itemsPerPage;
+
+            this.currentPage = 1;
+
+            this.pages = 0;
+
+            this.inited = false;
+
+            this.showRecords = function (from, to) {
+
+                var rows = document.getElementById(tableName).rows;
+
+                // i starts from 1 to skip table header row
+
+                for (var i = 1; i < rows.length; i++) {
+
+                    if (i < from || i > to)
+
+                        rows[i].style.display = 'none';
+
+                    else
+
+                        rows[i].style.display = '';
+                }
+            }
+            this.showPage = function (pageNumber) {
+
+                if (!this.inited) {
+                    alert("not inited");
+                    return;
+                }
+                var oldPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                oldPageAnchor.className = 'pg-normal';
+
+                this.currentPage = pageNumber;
+
+                var newPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                newPageAnchor.className = 'pg-selected';
+
+                var from = (pageNumber - 1) * itemsPerPage + 1;
+
+                var to = from + itemsPerPage - 1;
+
+                this.showRecords(from, to);
+
+            }
+
+            this.prev = function () {
+
+                if (this.currentPage > 1)
+
+                    this.showPage(this.currentPage - 1);
+
+            }
+
+            this.next = function () {
+
+                if (this.currentPage < this.pages) {
+
+                    this.showPage(this.currentPage + 1);
+
+                }
+
+            }
+
+            this.init = function () {
+
+                var rows = document.getElementById(tableName).rows;
+
+                var records = (rows.length - 1);
+
+                this.pages = Math.ceil(records / itemsPerPage);
+
+                this.inited = true;
+
+            }
+
+            this.showPageNav = function (pagerName, positionId) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var element = document.getElementById(positionId);
+
+                var pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal"> « Prev </span> ';
+
+                for (var page = 1; page <= this.pages; page++)
+
+                    pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span> ';
+
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal"> Next »</span>';
+
+                element.innerHTML = pagerHtml;
+
+            }
+
+        }
+    </script>
+
+
+</body>
+
+@section scripts
+    {
+}
+
+
+

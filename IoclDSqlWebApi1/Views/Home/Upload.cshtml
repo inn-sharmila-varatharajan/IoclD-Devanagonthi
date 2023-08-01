@@ -1,0 +1,51 @@
+﻿@{
+
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+   
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+        .left {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+        }
+        .arrow {
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="row">
+        <h1 class="col justify-content-center" ><i class="arrow left" onclick="history.back();"></i>CSV Upload</h1>
+    </div>
+    <div class="row m-4">
+        <div class="col-4">
+            @using (Html.BeginForm(null, "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="file" name="postedFile" />
+                <input class="mt-4 btn btn-primary" style="font-size:large" type="submit" value="Upload" />
+            }
+
+        </div>
+        <div class="col-8">
+            <h3>Sample of CSV header and field(header not required in CSV file)</h3>
+           <img src="~/assets/sample.png" />
+
+        </div>
+    </div>
+   
+</body>
+</html>

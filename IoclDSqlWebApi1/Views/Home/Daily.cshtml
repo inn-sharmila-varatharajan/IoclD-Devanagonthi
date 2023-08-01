@@ -1,0 +1,463 @@
+﻿
+@{
+    ViewBag.Title = "Daily";
+}
+
+
+    <style type="text/css">
+
+        .row {
+            display: flex;
+        }
+        .card {
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            border: none;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+        }
+
+        .column {
+            margin-left: 10px;
+            flex: 10%;
+            padding: 5px;
+            /* Should be removed. Only for demonstration */
+        }
+
+        .paging-nav {
+            text-align: right;
+            padding-top: 2px;
+        }
+
+            .paging-nav a {
+                margin: auto 1px;
+                text-decoration: none;
+                display: inline-block;
+                padding: 1px 7px;
+                background: #03174f;
+                color: white;
+                border-radius: 3px;
+            }
+            .paging-nav .selected-page {
+                background: #03174f;
+                font-weight: bold;
+            }
+        .paging-nav,
+        #Table {
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+        .divpadding {
+            border: 3px solid green;
+        }
+        table {
+            border-collapse: collapse;
+        }
+
+        tr {
+            border-bottom: 1pt solid black;
+            background: #fafafa;
+        }
+
+            tr:nth-child(even) {
+                background-color: #D6EEEE;
+            }
+    </style>
+    <style type="text/css">
+        .pg-normal {
+            color: #ffffff;
+            font-size: 15px;
+            cursor: pointer;
+            background: #03174f;
+            padding: 2px 4px 2px 4px;
+        }
+        .pg-selected {
+            color: #000;
+            font-size: 15px;
+            background: #ffffff;
+            padding: 2px 4px 2px 4px;
+        }
+        table.yui {
+            font-family: arial;
+            border-collapse: collapse;
+            border: solid 3px #03174f;
+            font-size: small;
+        }
+            table.yui td {
+                padding: 5px;
+                border-right: solid 1px #03174f;
+            }
+        table td {
+            padding: 0.5rem;
+            border: 1px solid #fff;
+        }
+        #btnExport{
+            width:35px;
+        }
+        @@keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+
+        .spin::before {
+            animation: 1.5s linear infinite spinner;
+            animation-play-state: inherit;
+            border: solid 5px #cfd0d1;
+            border-bottom-color: #1c87c9;
+            border-radius: 50%;
+            content: "";
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            transform: translate3d(-50%, -50%, 0);
+            will-change: transform;
+        }
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.75) url(../assets/loader.gif) no-repeat center center;
+            z-index: 10000;
+        }
+
+    </style>
+
+
+<body>
+    <div class="row mb-5 justify-content-center" style="margin-top:50px;">
+        <div class="col-lg-9">
+            <div class="card">
+                <h2 class="card-header fw-bolder iocl-blue-text">
+                   Carousel Daily Report
+                </h2>
+                <div class="d-flex justify-content-start" style="margin-top:10px;margin-left:10px;">
+                        <div class="btn-group">
+                            <h4 class="">From</h4>
+                            <input type="date" id="datechange">
+                        </div>
+                        <div class="btn-group">
+                            <h4 class="">To</h4>
+                            <input type="date" id="datechange1">
+                        </div>
+                        <div class="btn-group mt-2 col-md-12">
+                            <button type="submit" value="Submit" onclick="mybutton()">Submit</button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end" style="margin-top:-20px;">
+                        <div class="btn-group float-end">
+                            <image src="../assets/excel.png" id="btnExport" onclick="exportReportToExcel(this)"></image>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <image src="../assets/pdf.png" id="btnExport" onclick="pdf()"></image>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        </div>
+                        <div class="col">
+                            <table id="Table1" hidden style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                                <thead id="reporthead1">
+                                    <tr align="left" style="background-color:#004080;color:White;">
+                                        <td>S.No</td>
+                                        <td>Date</td>
+                                        <td>Carousel</td>
+                                        <td>DC Count</td>
+                                        <td>CC Count</td>
+                                    </tr>
+                                <tbody id="reportdatas1"></tbody>
+                            </table>
+                            <table id="Table" style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                                <thead id="reporthead">
+                                    <tr align="left" style="background-color:#004080;color:White;">
+                                        <td>S.No</td>
+                                        <td>Date</td>
+                                        <td>Carousel</td>
+                                        <td>DC Count</td>
+                                        <td>CC Count</td>
+                                    </tr>
+
+                                <tbody id="reportdatas"></tbody>
+
+                            </table>
+                        </div>
+                        <div id="pageNavPosition" style="padding-top: 20px" align="center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div id="loader"></div>
+    <script src="../assets/script/svg-template.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="../Scripts/table2excel.js"></script>
+    <script src="../Scripts/tableHTMLExport.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        let docdefinition = "";
+        var pager = new Pager('Table', 10);
+        var spinner = $('#loader');
+        var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+        var fromdate, todate;
+        $(document).ready(function () {
+            var now = new Date();
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+            fromdate = now.getFullYear() + "-" + (month) + "-" + (day);
+            todate = now.getFullYear() + "-" + (month) + "-" + (day);
+            $('#datechange').val(today);
+            $('#datechange1').val(today);
+            datechange.max = new Date().toISOString().split("T")[0];
+            spinner.show();
+            Getproductioncount(fromdate, todate);
+        });
+        $('#datechange').change(function () {
+            var selecteddate = this.value;
+            $('#reportdatas').innerHTML = "";
+            fromdate = selecteddate;
+                       
+        });
+
+        $('#datechange1').change(function () {
+            var selecteddate = this.value;
+            $('#reportdatas').innerHTML = "";
+            todate = selecteddate;
+           
+
+        });
+       
+
+        async function Getproductioncount(fromdate, todate) {
+
+            let url = weburl + "api/GetReportController/GetDaily/" + fromdate + "/" + todate;
+
+            axios.get(url).then
+
+                (data => {
+
+                    console.log(data.data);
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    let rowhtml = "";
+                    spinner.hide();
+
+                    if (data.data.length == 0) {
+
+                        document.getElementById("reportdatas").innerHTML = "No Datas";
+
+                        return;
+                    }
+                    for (i = 0; i < data.data.length; i++) {
+                        let obj = data.data[i];
+                        let date = obj.date.split("T");
+                        rowhtml += `<tr><td>${i + 1}</td><td>${date[0]}</td>
+<td>${obj.device}</td><td>${numberWithCommas(obj.count)}</td><td>${numberWithCommas(obj.cccount)}</td ></tr >
+`;
+                        document.getElementById("reportdatas").innerHTML = rowhtml;
+                        document.getElementById("reportdatas1").innerHTML = rowhtml;
+                        spinner.hide();
+                    }
+                    pager.init();
+                    pager.showPageNav('pager', 'pageNavPosition');
+                    pager.showPage(1);
+
+                }).catch(err => alert(err));
+        }
+        function mybutton() {
+            spinner.show();
+            Getproductioncount(fromdate,todate);
+        }
+        function pdf() {
+            var doc = new jsPDF(this.pdfOrientation, 'pt', this.pdfFormat);
+            var res = doc.autoTableHtmlToJson(document.getElementById("Table1"));
+            doc.autoTable(res.columns, res.data, {
+                margin: { top: 40, horizontal: 10 }, startY: false, theme: 'grid', pageBreak:
+                    'always', tableWidth: 'auto', columnWidth: 'wrap', showHeader: 'everyPage',
+                tableLineColor: 200, tableLineWidth: 0,
+                columnStyles: {
+                    0: { columnWidth: 'auto' }, 1: { columnWidth: 'auto' }, 2: { columnWidth: 'auto' }, 3:
+                        { columnWidth: 'auto' }, 4: { columnWidth: 'auto' },
+                    5: { columnWidth: 'auto' }, 6: { columnWidth: 'auto' }, 7: { columnWidth: 'auto' }, 8:
+                        { columnWidth: 'auto' }
+                },
+                headerStyles: { theme: 'grid' },
+                styles: {
+                    overflow: 'linebreak', columnWidth: 'wrap', font: 'arial', fontSize: 10,
+                    cellPadding: 8, overflowColumns: 'linebreak'
+                },
+            });
+            doc.save('Report.pdf');
+        }
+        function exportReportToExcel() {
+            var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange; var j = 0;
+            tab = document.getElementById('Table'); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+            {
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            }
+            else                 //other browser not tested on IE 11
+                sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+            return (sa);
+        }
+
+   
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function Pager(tableName, itemsPerPage) {
+
+            this.tableName = tableName;
+
+            this.itemsPerPage = itemsPerPage;
+
+            this.currentPage = 1;
+
+            this.pages = 0;
+
+            this.inited = false;
+
+            this.showRecords = function (from, to) {
+
+                var rows = document.getElementById(tableName).rows;
+
+                // i starts from 1 to skip table header row
+
+                for (var i = 1; i < rows.length; i++) {
+
+                    if (i < from || i > to)
+
+                        rows[i].style.display = 'none';
+
+                    else
+
+                        rows[i].style.display = '';
+
+                }
+
+            }
+
+            this.showPage = function (pageNumber) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var oldPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                oldPageAnchor.className = 'pg-normal';
+
+                this.currentPage = pageNumber;
+
+                var newPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                newPageAnchor.className = 'pg-selected';
+
+                var from = (pageNumber - 1) * itemsPerPage + 1;
+
+                var to = from + itemsPerPage - 1;
+
+                this.showRecords(from, to);
+
+            }
+
+            this.prev = function () {
+
+                if (this.currentPage > 1)
+
+                    this.showPage(this.currentPage - 1);
+
+            }
+
+            this.next = function () {
+
+                if (this.currentPage < this.pages) {
+
+                    this.showPage(this.currentPage + 1);
+
+                }
+
+            }
+
+            this.init = function () {
+
+                var rows = document.getElementById(tableName).rows;
+
+                var records = (rows.length - 1);
+
+                this.pages = Math.ceil(records / itemsPerPage);
+
+                this.inited = true;
+
+            }
+
+            this.showPageNav = function (pagerName, positionId) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var element = document.getElementById(positionId);
+
+                var pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal"> « Prev </span> ';
+
+                for (var page = 1; page <= this.pages; page++)
+
+                    pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span> ';
+
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal"> Next »</span>';
+
+                element.innerHTML = pagerHtml;
+
+            }
+
+        }
+    </script>
+
+
+</body>
+
+@section scripts
+    {
+}
+

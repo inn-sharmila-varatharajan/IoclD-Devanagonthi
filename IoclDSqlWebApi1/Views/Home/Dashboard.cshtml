@@ -1,0 +1,894 @@
+﻿@{
+    ViewBag.Title = "Count and Conveyer Management System";
+}
+
+
+
+
+
+  
+<style>
+    @@media all and (min-width:1201px) and (max-width: 2000px) {
+        body {
+            margin-top: 20px;
+            background: #FAFAFA;
+            overflow:hidden;
+        }
+    }
+
+        .order-card {
+            color: #000;
+        }
+
+        .bg-c-blue {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-green {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-yellow {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-pink {
+            background-color: #f1f1f1;
+        }
+
+
+        .card {
+            border-radius: 5px;
+            height: 220px;
+            width: 90%;
+            -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            border: none;
+            margin-bottom: 30px;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .card .card-block {
+                padding: 10px;
+            }
+
+        .order-card i {
+            font-size: 26px;
+        }
+
+        .f-left {
+            float: left;
+        }
+
+        .f-right {
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+            opacity: .6
+        }
+
+        @@media all and (min-width:1001px)  {
+            .column {
+                float: left;
+                width: 10%;
+                border: 1px solid black;
+                height: 40px;
+                margin: 1px 20px 2px 1px;
+                background-color: #ffffc2;
+                opacity: 1;
+                border-radius: 3px;
+            }
+        }
+
+        @@media all and (min-width:300px) and (max-width: 1000px) {
+            .column {
+                float: left;
+                width: 8%;
+                border: 1px solid black;
+                height: 40px;
+                margin: 0px 20px 0px 1px;
+                background-color: #ffffc2;
+                opacity: 1;
+                border-radius: 3px;
+            }
+        }
+
+        @@media all and (min-width:1001px)  {
+            .column1 {
+                float: left;
+                width: 10%;
+                text-align: center;
+                height: 40px;
+                margin: 1px 20px 2px 1px;
+            }
+        }
+
+        @@media all and (min-width:300px) and (max-width: 1000px) {
+            .column1 {
+                float: left;
+                width: 8%;
+                text-align: center;
+                height: 40px;
+                margin: 0px 20px 0px 1px;
+            }
+        }
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .circle {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            margin-left: 50%;
+            animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+        }
+
+        @@keyframes scaleIn {
+            from {
+                transform: scale(.5, .5);
+                opacity: .5;
+            }
+
+            to {
+                transform: scale(2.5, 2.5);
+                opacity: 0;
+            }
+        }
+
+        .not1 {
+            width: 10%;
+            height: 40px;
+            margin: 1px 0px 2px 1px;
+        }
+
+        .cot {
+        }
+
+        .textlarge {
+            font-size: 24px;
+            opacity: .6;
+            font-weight: bold;
+        }
+    
+
+    
+</style>
+
+<body>
+    <div id="row">
+        <div id="content" class="p-4">
+              
+
+            <div class="row">
+                <div class="col-md-4 col-xl-4 col-xs-3">
+                    <div class="card bg-c-blue order-card" style="height:180px;">
+                        <div class="card-block">
+                            <div class="row">
+                                <img src="../assets/truck.png"  height="40" width="40" style="transform: scaleX(-1);margin-left:8px;" />
+                                <h2 class="m-b-0 col-xs-6" style="font-weight:bold;margin-left:0px;">
+                                    Unloading Bay
+
+                                </h2>
+                                <span class="column f-right" id="unloadcolor" style="float:right;height:50px;width:60px;background-color:red;" ></span>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">No. of Trucks </p>
+                                <p class="m-b-0 textlarge" id="unloadtruckcount" style="float:right;width:38%;text-align:end;">1 </p>
+
+                            </div>
+                            @*<div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">No. of Bottles </p>
+                                <p class="m-b-0 textlarge" id="unloadcount" style="float:right;width:40%;text-align:end;">1 </p>
+
+                            </div>*@
+
+                            @*<p class="m-b-0">No. of Trucks <span class="f-right textlarge" id="unloadtruckcount">1</span></p>
+                            <p class="m-b-0">No. of Bottles<span class="f-right textlarge" id="unloadcount">351</span></p>*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-4 col-xs-3">
+                    <div class="card bg-c-green order-card" style="height:180px;">
+                        <div class="card-block">
+                            <h2 class="m-b-0" style="font-weight:bold;">
+                                Production Count
+                                <span class="column f-right" style="float:right;height:50px;width:60px;border:0px;background-color:#f1f1f1;"></span>
+                            </h2>
+                            <div style="float:left;">
+                                <div class="circle" id="circle" style="animation-delay: -3s"></div>
+                                <div class="circle" id="circle1" style="animation-delay: -2s"></div>
+                                <div class="circle" id="circle2" style="animation-delay: -1s"></div>
+                                <div class="circle" id="circle3" style="animation-delay: 0s"></div>
+                            </div><br />
+                            <br />
+                            <div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">Total Production Count  </p>
+                                <p class="m-b-0 textlarge" id="totalcount" style="float:right;width:38%;text-align:end;">1 </p>
+
+                            </div>
+
+                            <div class="row" style="margin-top:-5px;">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">RPH  </p>
+                                <p class="m-b-0 textlarge" id="rph" style="float:right;width:38%;text-align:end;font-weight:bold;">1 </p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xl-4 col-xs-3">
+                    <div class="card bg-c-yellow order-card" style="height:180px;">
+                        <div class="card-block">
+                            <div class="row">
+                                <img src="../assets/truck.png"  height="40" width="40" style="margin-left:8px;" />
+                                <h2 class="m-b-0 col-xs-6" style="font-weight:bold;margin-left:0px;">
+                                    Loading Bay
+
+                                </h2>
+                                <span class="column f-right" id="loadcolor" style="float:right;height:50px;width:60px;background-color:red;"></span>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">No. of Trucks  </p>
+                                <p class="m-b-0 textlarge" id="loadtruckcount" style="float:right;width:38%;text-align:end;font-weight:bold;">1 </p>
+
+                            </div>
+                            @*<div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">No. of Bottles </p>
+                                <p class="m-b-0 textlarge" id="loadcount" style="float:right;width:38%;text-align:end;font-weight:bold;">1 </p>
+
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xl-4 col-xs-3">
+                    <div class="card bg-c-pink order-card" style="height:180px;">
+                        <div class="card-block">
+                            <h3 class="m-b-0" style="font-weight:bold;">Unloading Bay Occupancy </h3>
+
+                            <div class="row">
+                                <img src="../assets/truck.png" alt="" height="50" width="50" style="transform: scaleX(-1);margin-left:10px;">
+                                <div class="column" id="088" style="margin-left:10px;"></div>
+                                <div class="column" id="091"></div>
+                                <div class="column" id="095"></div>
+                                <div class="column" id="096"></div>
+                            </div>
+                            <div class="row" style="margin-top:-10px;margin-left:5px;">
+                                <div class="column1" style=""></div>
+                                <div class="column1">U1</div>
+                                <div class="column1">U2</div>
+                                <div class="column1">U3</div>
+                                <div class="column1">U4</div>
+                            </div>
+                            <div class="row" style="margin-top:-20px;">
+                                <img  alt="" height="50" width="50" style="visibility:hidden;">
+                                <div class="column" id="093" style="margin-left:20px;"></div>
+                                <div class="column" id="089"></div>
+                                <div class="column" id="090"></div>
+                                <div class="column" id="098"></div>
+                            </div>
+                            <div class="row" style="margin-top: -10px;margin-left: 5px;">
+                                <div class="column1" style=""></div>
+                                <div class="column1">U5</div>
+                                <div class="column1">U6</div>
+                                <div class="column1">U7</div>
+                                <div class="column1">U8</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4 col-xs-3">
+                    <div class="card bg-c-pink order-card" style="height:180px;">
+                        <div class="card-block">
+                            <h3 class="m-b-0" style="font-weight:bold;">Progress</h3>
+                           <br/>
+                            <div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">Achievable Target Count  </p>
+                                <p class="m-b-0 textlarge" id="acheive" style="float:right;width:38%;text-align:end;">1 </p>
+
+                            </div>
+                            <div class="row">
+                                <p class="m-b-0" style="width:50%;margin-left:3%;">Percentage  </p>
+                                <p class="m-b-0 textlarge" id="percentage" style="float:right;width:38%;text-align:end;">1 </p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4 col-xs-3">
+                    <div class="card bg-c-pink order-card" style="height:180px;">
+                        <div class="card-block">
+                            <h3 class="m-b-0" style="font-weight:bold;">Loading Bay Occupancy </h3>
+
+
+                            <div class="row">
+                                <div class="column" style="margin-left: 10px;" id="081"></div>
+                                <div class="column" id="084"></div>
+                                <div class="column" id="092"></div>
+                                <div class="column" id="082"></div>
+                                <div class="column" id="086"></div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="column1" style="margin-left:15px;">L1</div>
+                                <div class="column1">L2</div>
+                                <div class="column1">L3</div>
+                                <div class="column1">L4</div>
+                                <div class="column1">L5</div>
+                            </div>
+                            <div class="row" style="margin-top:-20px">
+                                <div class="column" style="margin-left: 10px;" id="085"></div>
+                                <div class="column" id="097"></div>
+                                <div class="column" id="099"></div>
+                                <div class="column" id="094"></div>
+                                <div class="column" id="131"></div>
+                                <img src="../assets/truck.png" alt="" height="50" width="50" >
+                            </div>
+                            <div class="row" style="margin-top:-10px;">
+                                <div class="column1" style="margin-left:15px;">L6</div>
+                                <div class="column1">L7</div>
+                                <div class="column1">L8</div>
+                                <div class="column1">L9</div>
+                                <div class="column1">L10</div>
+
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-xl-3 col-xs-4">
+                    <div class="card bg-c-pink order-card">
+                        <div class="card-block" >
+                            <h2 class="m-b-0" style="font-weight:bold;">
+                               Carousel 1
+                                <span class="column f-right" id="c1blk" style="background-color: red; float: right; height: 50px; width: 60px;"></span>
+                            </h2>
+                            <br />
+
+                           
+                            <p class="m-b-0">Live Count <span class="f-right" id="c1count"> </span></p>
+
+                            <p class="m-b-0">RPH <span class="f-right" id="c1rph"> </span></p>
+                            <p class="m-b-0">Achievable target count <span class="f-right" id="c1acheive"> </span></p>
+                            <p class="m-b-0">Percentage <span class="f-right" id="c1actual"> </span></p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xl-3 col-xs-4">
+                    <div class="card bg-c-pink order-card">
+                        <div class="card-block" >
+                            <h2 class="m-b-0" style="font-weight:bold;">
+                                Carousel 2
+                                <span class="column f-right" id="c2blk" style="background-color: red; float: right; height: 50px; width: 60px;"></span>
+                            </h2>
+                            <br />
+                            <p class="m-b-0">Live Count <span class="f-right" id="c2count"> </span></p>
+
+                            <p class="m-b-0">RPH <span class="f-right" id="c2rph"> </span></p>
+                            <p class="m-b-0">Achievable target count <span class="f-right" id="c2acheive"> </span></p>
+                            <p class="m-b-0">Percentage <span class="f-right" id="c2actual"> </span></p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xl-3 col-xs-4">
+                    <div class="card bg-c-pink order-card">
+                        <div class="card-block"  style=" position: relative;">
+
+                            <h2 class="m-b-0" style="font-weight:bold;">
+                                Carousel 3
+                                <span class="column f-right" id="c3blk" style="background-color: red; float: right; height: 50px; width: 60px;"></span>
+                            </h2>
+                            <br />
+                            <p class="m-b-0">Live Count <span class="f-right" id="c3count"> </span></p>
+
+                            <p class="m-b-0">RPH <span class="f-right" id="c3rph"> </span></p>
+                            <p class="m-b-0">Achievable target count <span class="f-right" id="c3acheive"> </span></p>
+                            <p class="m-b-0">Percentage <span class="f-right" id="c3actual"> </span></p>
+                       
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xl-3 col-xs-4">
+                    <div class="card bg-c-pink order-card">
+                        <div class="card-block">
+                            <h2 class="m-b-0" style="font-weight:bold;">
+                                Carousel 4
+                                <span class="column f-right" id="c4blk" style="background-color: red; float: right; height: 50px; width: 60px;"></span>
+                            </h2>
+                            <br />
+                            <p class="m-b-0">Live Count <span class="f-right" id="c4count"> </span></p>
+
+                            <p class="m-b-0">RPH <span class="f-right" id="c4rph"> </span></p>
+                            <p class="m-b-0">Achievable target count <span class="f-right" id="c4acheive"> </span></p>
+                            <p class="m-b-0">Percentage <span class="f-right" id="c4actual"> </span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</body>
+
+
+
+@section scripts
+    {
+   
+
+    <!-- JavaScript Bundle with Popper -->
+  <!-- CSS only -->
+  
+    <script type="text/javascript">
+         let selecteddate,selectedevice;
+           var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+        $(document).ready(function () {
+
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+           // Getproductioncount(today);
+            GetRPHValues(today);
+            Getloadcount();
+            GetunloadTruckcount();
+            GetloadTruckcount();
+            GetloadTrucktarget();
+            Getunloadtruckdetails();
+            setInterval(initMap, 5000);
+            function initMap() {
+              //  Getproductioncount(today);
+                GetRPHValues(today);
+                Getloadcount();
+                GetunloadTruckcount();
+                GetloadTruckcount();
+                GetloadTrucktarget();
+                Getunloadtruckdetails();
+            }
+        });
+
+        
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        async function Getproductioncount(value) {
+
+            let url = weburl + "api/GetCardController/Getproductioncount/" + value;
+            //let url = " http://188.42.97.98:90/api/GetCardController/GetRPHValues/2022-08-09 ";
+
+            axios.get(url).then
+
+                (data => {
+
+              
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+
+                    document.getElementById("totalcount").innerHTML = numberWithCommas(data.data[0]["Total"]);
+                    document.getElementById("rph").innerHTML = numberWithCommas(data.data[0]["rph"]);
+                    document.getElementById("acheive").innerHTML = numberWithCommas(data.data[0]["rph"] * 16);
+                    document.getElementById("percentage").innerHTML = numberWithCommas(data.data[0]["percentage"] + "%");
+
+                    if (data.data[0]['percentage'] > 89) {
+                        //document.getElementById('dot').style.backgroundColor = "#00ff00";
+                        document.getElementById('circle').style.backgroundColor = "#00ff00";
+                        document.getElementById('circle1').style.backgroundColor = "#00ff00";
+                        document.getElementById('circle2').style.backgroundColor = "#00ff00";
+                        document.getElementById('circle3').style.backgroundColor = "#00ff00";
+                    }
+                    else if (data.data[0]['percentage'] > 70) {
+
+                        //document.getElementById('dot').style.backgroundColor = "#00FFFF";
+                        document.getElementById('circle').style.backgroundColor = "#00FFFF";
+                        document.getElementById('circle1').style.backgroundColor = "#00FFFF";
+                        document.getElementById('circle2').style.backgroundColor = "#00FFFF";
+                        document.getElementById('circle3').style.backgroundColor = "#00FFFF";
+
+
+                    }
+                    else {
+
+                        //document.getElementById('dot').style.backgroundColor = "#FF0000";
+                        document.getElementById('circle').style.backgroundColor = "#FF0000";
+                        document.getElementById('circle1').style.backgroundColor = "#FF0000";
+                        document.getElementById('circle2').style.backgroundColor = "#FF0000";
+                        document.getElementById('circle3').style.backgroundColor = "#FF0000";
+                        
+                    }
+                    //  alert(data.data[0]["Total"]);
+
+
+                }).catch();
+
+
+
+        }
+
+        async function GetRPHValues(value) {
+
+            let url = weburl + "api/GetCardController/GetRPHValues/" + value;
+            //let url = " http://188.42.97.98:90/api/GetCardController/GetRPHValues/2022-08-09 ";
+
+            axios.get(url).then
+
+                (data => {
+
+                   
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+                            if (obj.carousel == 4) {
+                                document.getElementById("c4count").innerHTML = numberWithCommas(obj.livecount);
+                                document.getElementById("c4rph").innerHTML = numberWithCommas(obj.rph);
+                                document.getElementById("c4acheive").innerHTML = numberWithCommas(obj.rph * 16);
+                                document.getElementById("c4actual").innerHTML = numberWithCommas(obj.actual + "%");
+                                if (obj.actual > 89) {
+                                    document.getElementById('c4blk').style.backgroundColor = "#00ff00";
+                                    document.getElementById('c4blk').style.opacity = ".5";
+                                    document.getElementById('c4blk').style.borderRadius = "5px";
+                                }
+                                else if (obj.actual > 70) {
+                                    document.getElementById('c4blk').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('c4blk').style.opacity = ".5";
+                                    document.getElementById('c4blk').style.borderRadius = "5px";
+                                }
+                                else {
+                                    document.getElementById('c4blk').style.backgroundColor = "#FF0000";
+                                    document.getElementById('c4blk').style.opacity = ".5";
+                                    document.getElementById('c4blk').style.borderRadius = "5px";
+                                }
+                            }
+                            else if (obj.carousel == 3) {
+                                document.getElementById("c3count").innerHTML = numberWithCommas(obj.livecount);
+                                document.getElementById("c3rph").innerHTML = numberWithCommas(obj.rph);
+                                document.getElementById("c3acheive").innerHTML = numberWithCommas(obj.rph * 16);
+                                document.getElementById("c3actual").innerHTML = numberWithCommas(obj.actual + "%");
+
+                                if (obj.actual > 89) {
+                                    document.getElementById('c3blk').style.backgroundColor = "#00ff00";
+                                    document.getElementById('c3blk').style.opacity = ".5";
+                                    document.getElementById('c3blk').style.borderRadius = "5px";
+
+
+                                }
+                                else if (obj.actual > 70) {
+                                    document.getElementById('c3blk').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('c3blk').style.opacity = ".5";
+                                    document.getElementById('c3blk').style.borderRadius = "5px";
+
+                                }
+                                else {
+                                    document.getElementById('c3blk').style.backgroundColor = "#FF0000";
+                                    document.getElementById('c3blk').style.opacity = ".5";
+                                    document.getElementById('c3blk').style.borderRadius = "5px";
+
+                                }
+                            }
+                            else if (obj.carousel == 2) {
+                                document.getElementById("c2count").innerHTML = numberWithCommas(obj.livecount);
+                                document.getElementById("c2rph").innerHTML = numberWithCommas(obj.rph);
+                                document.getElementById("c2acheive").innerHTML = numberWithCommas(obj.rph * 16);
+                                document.getElementById("c2actual").innerHTML = numberWithCommas(obj.actual + "%");
+                                if (obj.actual > 89) {
+                                    document.getElementById('c2blk').style.backgroundColor = "#00ff00";
+                                    document.getElementById('c2blk').style.opacity = ".5";
+                                    document.getElementById('c2blk').style.borderRadius = "5px";
+                                }
+                                else if (obj.actual > 70) {
+                                    document.getElementById('c2blk').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('c2blk').style.opacity = ".5";
+                                    document.getElementById('c2blk').style.borderRadius = "5px";
+                                }
+                                else {
+                                    document.getElementById('c2blk').style.backgroundColor = "#FF0000";
+                                    document.getElementById('c2blk').style.opacity = ".5";
+                                    document.getElementById('c2blk').style.borderRadius = "5px";
+                                }
+                            }
+                            else if (obj.carousel == 1) {
+                                document.getElementById("c1count").innerHTML = numberWithCommas(obj.livecount);
+                                document.getElementById("c1rph").innerHTML = numberWithCommas(obj.rph);
+                                document.getElementById("c1acheive").innerHTML = numberWithCommas(obj.rph * 16);
+                                document.getElementById("c1actual").innerHTML = numberWithCommas(obj.actual + "%");
+                                if (obj.actual > 89) {
+                                    document.getElementById('c1blk').style.backgroundColor = "#00ff00";
+                                    document.getElementById('c1blk').style.opacity = ".5";
+                                    document.getElementById('c1blk').style.borderRadius = "5px";
+                                }
+                                else if (obj.actual > 70) {
+                                    document.getElementById('c1blk').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('c1blk').style.opacity = ".5";
+                                    document.getElementById('c1blk').style.borderRadius = "5px";
+                                }
+                                else {
+                                    document.getElementById('c1blk').style.backgroundColor = "#FF0000";
+                                    document.getElementById('c1blk').style.opacity = ".5";
+                                    document.getElementById('c1blk').style.borderRadius = "5px";
+                                }
+                            }
+
+                            else if (obj.carousel == 5) {
+                                document.getElementById("totalcount").innerHTML = numberWithCommas(obj.livecount);
+                                document.getElementById("rph").innerHTML = numberWithCommas(obj.rph);
+                                document.getElementById("acheive").innerHTML = numberWithCommas(obj.rph * 16);
+                                document.getElementById("percentage").innerHTML = numberWithCommas(obj.actual + "%");
+
+                                if (obj.actual > 89) {
+                                    //document.getElementById('dot').style.backgroundColor = "#00ff00";
+                                    document.getElementById('circle').style.backgroundColor = "#00ff00";
+                                    document.getElementById('circle1').style.backgroundColor = "#00ff00";
+                                    document.getElementById('circle2').style.backgroundColor = "#00ff00";
+                                    document.getElementById('circle3').style.backgroundColor = "#00ff00";
+                                }
+                                else if (obj.actual > 70) {
+
+                                    //document.getElementById('dot').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('circle').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('circle1').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('circle2').style.backgroundColor = "#00FFFF";
+                                    document.getElementById('circle3').style.backgroundColor = "#00FFFF";
+
+
+                                }
+                                else {
+
+                                    //document.getElementById('dot').style.backgroundColor = "#FF0000";
+                                    document.getElementById('circle').style.backgroundColor = "#FF0000";
+                                    document.getElementById('circle1').style.backgroundColor = "#FF0000";
+                                    document.getElementById('circle2').style.backgroundColor = "#FF0000";
+                                    document.getElementById('circle3').style.backgroundColor = "#FF0000";
+
+                                }
+                            }
+
+                        }
+                        
+                    }
+
+                  
+
+                 
+
+
+                }).catch();
+
+
+
+        }
+
+        async function Getloadcount() {
+
+            let url = weburl + "api/GetDashboardController/GetLoadingdevicecount/" ;
+            axios.get(url).then
+
+                (data => {
+
+                 
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+
+                           // document.getElementById("loadcount").innerHTML = numberWithCommas(obj.loading);
+                            //document.getElementById("unloadcount").innerHTML = numberWithCommas(obj.unloading);
+                        }
+
+                    }
+
+                }).catch();
+
+        }
+
+        async function GetunloadTruckcount() {
+
+            let url = weburl + "api/GetDashboardController/GetunloadTruckcount/";
+            axios.get(url).then
+
+                (data => {
+
+                   
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+
+                            
+                            document.getElementById("unloadtruckcount").innerHTML = numberWithCommas(obj.unloadtruck);
+                        }
+
+                    }
+
+                }).catch();
+
+        }
+
+        async function GetloadTruckcount() {
+
+            let url = weburl + "api/GetDashboardController/GetloadTruckcount/";
+            axios.get(url).then
+
+                (data => {
+
+                   
+                 
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+
+
+                            document.getElementById("loadtruckcount").innerHTML = numberWithCommas(obj.loadtruck);
+                        }
+
+                    }
+
+                }).catch();
+
+        }
+
+        async function GetloadTrucktarget() {
+
+            let url = weburl + "api/GetDashboardController/GetloadTrucktarget/";
+            axios.get(url).then
+
+                (data => {
+
+
+
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+                         
+                           
+                            if (obj.unloadtarget == 1) { 
+                                //document.getElementById('dot').style.backgroundColor = "#00ff00";
+                                document.getElementById('unloadcolor').style.backgroundColor = "#00ff00";
+                             
+                            }
+                            else if (obj.unloadtarget == 2) {
+
+                                //document.getElementById('dot').style.backgroundColor = "#FFBF00";
+                                document.getElementById('unloadcolor').style.backgroundColor = "#00FFFF";
+                            
+
+
+                            }
+                            else {
+
+                                //document.getElementById('dot').style.backgroundColor = "#FF0000";
+                                document.getElementById('unloadcolor').style.backgroundColor = "#FF0000";
+                              
+
+                            }
+
+                            if (obj.loadtarget == 1) {
+                                //document.getElementById('dot').style.backgroundColor = "#00ff00";
+                                document.getElementById('loadcolor').style.backgroundColor = "#00ff00";
+
+                            }
+                            else if (obj.loadtarget == 2) {
+
+                                //document.getElementById('dot').style.backgroundColor = "#00FFFF";
+                                document.getElementById('loadcolor').style.backgroundColor = "#00FFFF";
+
+
+
+                            }
+                            else {
+
+                                //document.getElementById('dot').style.backgroundColor = "#FF0000";
+                                document.getElementById('loadcolor').style.backgroundColor = "#FF0000";
+
+
+                            }
+                        }
+
+                    }
+
+                }).catch();
+
+        }
+
+
+        async function Getunloadtruckdetails() {
+
+            let url = weburl + "api/GetDashboardController/GetTruckDeatils/";
+            axios.get(url).then
+
+                (data => {
+
+
+
+                    if (data.data.length == 0) {
+
+                        return;
+                    }
+                    else {
+                        for (var i = 0; i < data.data.length; i++) {
+                            let obj = data.data[i];
+                         
+
+                            if (obj.status == 0) {
+                                //document.getElementById('dot').style.backgroundColor = "#00ff00";
+                                document.getElementById(obj.device).style.backgroundColor = "#00ff00";
+
+                            }
+                            else if (obj.status == 1) {
+
+                                //document.getElementById('dot').style.backgroundColor = "#00FFFF";
+                                document.getElementById(obj.device).style.backgroundColor = "#00FFFF";
+
+
+
+                            }
+                            else if (obj.status == 4) {
+
+                                //document.getElementById('dot').style.backgroundColor = "#FF0000";
+                                document.getElementById(obj.device).style.backgroundColor = "#FF0000";
+
+                                document.getElementById(obj.device).style.opacity = 1;
+
+                            }
+                            else if (obj.status == 2) { 
+                                //document.getElementById('dot').style.backgroundColor = "#FF0000";
+                                document.getElementById(obj.device).style.backgroundColor = "#FFFFc2";
+                                document.getElementById(obj.device).style.opacity = 1;
+
+
+                            }
+                        }
+
+                    }
+
+                }).catch();
+
+        }
+
+        
+
+    </script>
+}

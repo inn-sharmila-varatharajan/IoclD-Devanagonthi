@@ -1,0 +1,760 @@
+﻿
+@{
+    ViewBag.Title = "Truck";
+}
+
+
+<style>
+    body {
+        margin-top: 20px;
+        background: #FAFAFA;
+    }
+
+    .order-card {
+        color: #000;
+    }
+
+    .bg-c-blue {
+        background-color: #f1f1f1;
+    }
+
+    .bg-c-green {
+        background-color: #f1f1f1;
+    }
+
+    .bg-c-yellow {
+        background-color: #f1f1f1;
+    }
+
+    .bg-c-pink {
+        background-color: #f1f1f1;
+    }
+
+
+    .card {
+        border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+        box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+        border: none;
+        margin-bottom: 30px;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .card .card-block {
+            padding: 25px;
+        }
+
+    .order-card i {
+        font-size: 26px;
+    }
+
+    .f-left {
+        float: left;
+    }
+
+    .f-right {
+        float: right;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .column {
+        float: left;
+        width: 10%;
+        border: 1px solid black;
+        height: 50px;
+        margin: 1px 0px 2px 1px;
+        background-color: red;
+        opacity: 0.6
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .circle {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        margin-left: 50%;
+        animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+    }
+
+    @@keyframes scaleIn {
+        from {
+            transform: scale(.5, .5);
+            opacity: .5;
+        }
+
+        to {
+            transform: scale(2.5, 2.5);
+            opacity: 0;
+        }
+    }
+</style>
+<style type="text/css">
+    .paging-nav {
+        text-align: right;
+        padding-top: 2px;
+    }
+
+        .paging-nav a {
+            margin: auto 1px;
+            text-decoration: none;
+            display: inline-block;
+            padding: 1px 7px;
+            background: #03174f;
+            color: white;
+            border-radius: 3px;
+        }
+
+        .paging-nav .selected-page {
+            background: #03174f;
+            font-weight: bold;
+        }
+
+    .paging-nav,
+    #Table {
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+    }
+
+    .divpadding {
+        border: 3px solid green;
+    }
+</style>
+
+<style type="text/css">
+    #loader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.75) url(../assets/loader.gif) no-repeat center center;
+        z-index: 10000;
+    }
+
+    .pg-normal {
+        color: #ffffff;
+        font-size: 15px;
+        cursor: pointer;
+        background: #03174f;
+        padding: 2px 4px 2px 4px;
+    }
+
+    .pg-selected {
+        color: #000;
+        font-size: 15px;
+        background: #ffffff;
+        padding: 2px 4px 2px 4px;
+    }
+
+    table.yui {
+        font-family: arial;
+        border-collapse: collapse;
+        border: solid 1px #03174f;
+        font-size: small;
+    }
+
+        table.yui td {
+            padding: 5px;
+            border-right: solid 1px #03174f;
+        }
+
+    table {
+        border-collapse: collapse;
+    }
+
+        table td {
+            padding: 0.5rem;
+            border: 1px solid #fff;
+        }
+
+    .dropdown {
+        z-index: 1;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    tr {
+        border-bottom: 1pt solid black;
+        background: #fafafa;
+    }
+
+        tr:nth-child(even) {
+            background-color: #D6EEEE;
+        }
+
+    .push {
+        margin-left: 2%;
+        margin-top: 1%;
+    }
+
+    .push1 {
+        padding-left: 38%;
+    }
+
+    .form-control {
+        font-size: initial;
+    }
+</style>
+
+
+<body>
+    <div class="row mb-5 justify-content-center" style="margin-top:30px;">
+        <div class="col-lg-9">
+            <div class="card">
+                <h2 class="card-header fw-bolder iocl-blue-text">
+                    Truck Wise Report
+                </h2>
+                <div class="ml-4 mt-3 d-flex justify-content-start">
+
+                    <div class="btn-group">
+                        <input type="date" id="datechange">
+                    </div>
+
+                    <div class="dropdown  col-lg-9">
+                        <select name="BayNo" id="bayno" style="height:50px;width:200px;">
+                            <option value="001">UnLoading Bay</option>
+                            <option value="002">Loading Bay</option>
+                            <option value="005">All</option>
+                        </select>
+                        <select name="Segment1" class="Segment" id="Segment" style="height:50px;width:200px;">
+                        </select>
+
+                    </div>
+                    <div class="btn-group  float-end">
+                        <image src="../assets/excel.png" style="width:35px;height:35px;" id="btnExport" onclick="exportReportToExcel(this)"></image>
+                        &nbsp;&nbsp;
+
+                        <image src="../assets/pdf.png" style="width:35px;height:35px;" id="btnExport" onclick="pdf()"></image>
+
+                    </div>
+
+                </div>
+                <div class="row ml-4 mt-2">
+                    <input type="text" id="search" class="form-control" placeholder="Search">
+                    <button type="submit" onclick="searchpress()" class="ml-3" style="background-color: #03174f;color:white;">Search</button>
+                </div>
+                <div class="float-end">
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="col">
+                        <table id="Table1" hidden style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                            <thead id="reporthead1">
+                                <tr align="left" style="background-color:#004080;color:White;">
+                                    <td>S.No</td>
+                                    <td>Time In</td>
+                                    <td>Time Out</td>
+                                    <td>Duration</td>
+                                    <td>NFC ID</td>
+                                    <td>Truck Number</td>
+                                    <td>Driver Name</td>
+                                    <td>Vendor</td>
+                                    <td>Owner Type</td>
+                                    <td>Transporter Name</td>
+                                    <td>Fasttag ID</td>
+                                    <td>Bottles Count</td>
+                                </tr>
+                            <tbody id="reportdatas1"></tbody>
+                        </table>
+                        <table id="Table" style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                            <thead id="reporthead">
+                                <tr align="left" style="background-color:#004080;color:White;">
+
+                                    <td>S.No</td>
+                                    <td>Time In</td>
+                                    <td>Time Out</td>
+                                    <td>Duration</td>
+                                    <td>NFC ID</td>
+                                    <td>Truck Number</td>
+                                    <td>Driver Name</td>
+                                    <td>Vendor</td>
+                                    <td>Owner Type</td>
+                                    <td>Transporter Name</td>
+                                    <td>Fasttag ID</td>
+                                    <td>Bottles Count</td>
+                                </tr>
+
+                            <tbody id="reportdatas"></tbody>
+                        </table>
+                    </div>
+                    <div id="pageNavPosition" style="padding-top: 20px" align="center"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="loader"></div>
+
+    <script src="../assets/script/svg-template.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+    <script src="../Scripts/table2excel.js"></script>
+
+    <script src="../Scripts/tableHTMLExport.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+    var spinner = $('#loader');
+    var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+        var today,selecteddate;
+        var pager = new Pager('Table', 5);
+        var spinner = $('#loader');
+        var option1 = " <option value='88'>Unloading 1 (TC 11) </option><option value='91'>Unloading 2 (TC 5) </option><option value = '95'>Unloading 3 (TC 4)</option > <option value='96'>Unloading 4 (TC 3)</option><option value='93'>	Unloading 5 (TC 2) </option><option value='89'>Unloading 6 (TC 1) </option><option value='90'>Unloading 7 (TC 15)	 </option><option value='98'>	Unloading 8 (TC 14)	 </option>";
+        var option2 = " <option value='81'>Loading 1 (TC 12) </option><option value='84'>Loading 2 (TC 10)</option><option value = '92'>Loading 3 (TC 9)</option ><option value='82'>Loading 4 (TC 8)</option><option value='86'>Loading 5 (TC 7)</option><option value='85'>Loading 6 (TC 6)</option><option value = '97'> Loading 7(TC 19)</option> <option value='99'>Loading 8 (TC 18)</option><option value='94'>Loading 9 (TC 17)</option><option value='131'>Loading 10 (TC 16)</option>"
+        var option3 = "<option value=''005'>All</option> ";
+        var selecteddevice = "";
+    $(document).ready(function () {
+
+    var now = new Date();
+        var bayno = 001;
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    today = now.getFullYear() + "-" + (month) + "-" + (day);
+        selecteddate = today;
+        $('#datechange').val(today);
+        spinner.show();
+        Gettruckdetails(today, 88);
+        Getreporttruckdetails(today, 003);
+        datechange.max = new Date().toISOString().split("T")[0];
+        $('select[name="Segment1"]').append(option1);
+
+    });
+        $('#datechange').change(function () {
+            selecteddate = this.value;
+            today = selecteddate;
+            spinner.show();
+            $('#reportdatas').innerHTML = "";
+            Gettruckdetails(selecteddate, 88);
+            Getreporttruckdetails(selecteddate, 003);
+        });
+        $('#bayno').change(function () {
+            var selectedvalue = this.value;
+            bayno = selectedvalue;
+            spinner.show();
+            if (bayno == "005") {
+                $('select[name="Segment1"]').empty();
+                $('select[name="Segment1"]').append(option3);
+                Gettruckdetails(today, 005);
+                Getreporttruckdetails(today, 005);
+            }
+            else if (selectedvalue == "001") {
+                Gettruckdetails(today, 88);
+                Getreporttruckdetails(today, 003);
+                $('select[name="Segment1"]').empty();
+                $('select[name="Segment1"]').append(option1);
+            }
+            else {
+                $('select[name="Segment1"]').empty();
+                $('select[name="Segment1"]').append(option2);
+                Gettruckdetails(selecteddate, 81);
+                Getreporttruckdetails(selecteddate, 004);
+            }
+        });
+
+
+        $('#reportdropdown').change(function () {
+            var selectedvalue = this.value;
+            spinner.show();
+          //  Getreporttruckdetails(selecteddate, selectedvalue);
+        });
+
+
+    $('#Segment').change(function () {
+        var selectedvalue = this.value;
+        spinner.show();
+        if (bayno == "005") {
+            Gettruckdetails(selecteddate, 005);
+            Getreporttruckdetails(selecteddate, 005);
+        }
+         if (bayno == "002") {
+            Getreporttruckdetails(selecteddate, 004);
+        }
+        if (bayno == "001") {
+            Getreporttruckdetails(selecteddate, 003);
+        }
+            Gettruckdetails(selecteddate, selectedvalue);
+
+    });
+        function exportReportToExcel() {
+            var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange; var j = 0;
+            tab = document.getElementById('Table1'); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+            {
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            }
+            else                 //other browser not tested on IE 11
+                sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+            return (sa);
+        }
+    async function Gettruckdetails(date,deviceid) {
+        let url = weburl + "api/GetReportController/Gettruckdetails/" + date + "/" + deviceid;
+
+
+
+    axios.get(url).then
+
+    (data => {
+
+    console.log(data.data);
+    var row = '', row1 = '', row2 = '', row3 = '';
+    let rowhtml = "";
+        spinner.hide();
+    if (data.data.length == 0) {
+        document.getElementById("reportdatas").innerHTML = "No Datas";
+        return;
+        }
+
+        for (i = 0; i < data.data.length; i++) {
+            let ind = data.data.length - 1;
+        let obj = data.data[i];
+
+        let durat = obj.duration;
+        if (bayno == 005 && ind >i) {
+            if (durat.indexOf("-") !== -1 || durat == undefined || durat == null || durat == "") {
+                obj.outtime = null;
+                obj.duration = null;
+                obj.count = null;
+            }
+        }
+
+
+        rowhtml += `
+    <tr>
+        <td>${i + 1}</td>
+        <td>${obj.intime}</td>
+        <td>${obj.outtime == null ? "-" : obj.outtime }</td>
+<td>${obj.duration == null ? "-" : obj.duration}</td>
+ <td>${obj.nfc == null ? "-" : obj.nfc}</td><td>${obj.trucknum == null ? "-" : obj.trucknum}</td><td>${obj.name == "" ? "Not Registered" : obj.name}</td>
+<td>${obj.vendor == null ? "-" : obj.vendor}</td><td>${obj.otype == null ? "-" : obj.otype}</td><td>${obj.tname == null ? "-" : obj.tname}</td>
+<td>${obj.fid == null ? "-" : obj.fid}</td><td>${obj.count == null? '-': obj.count }</td >
+    </tr>
+    `;
+        document.getElementById("reportdatas").innerHTML = rowhtml;
+
+    spinner.hide();
+        }
+
+        pager.init();
+        pager.showPageNav('pager', 'pageNavPosition');
+        pager.showPage(1);
+    }).catch(err=>alert(err));
+        }
+
+
+        async function Gettruckdetailssearch(date, deviceid, vehno) {
+            let url = weburl + "api/GetReportController/Gettruckdetailssearch/" + date + "/" + deviceid + "/" + vehno;
+
+
+
+            axios.get(url).then
+
+                (data => {
+
+                    console.log(data.data);
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    let rowhtml = "";
+                    spinner.hide();
+                    if (data.data.length == 0) {
+                        document.getElementById("reportdatas").innerHTML = "No Datas";
+                        return;
+                    }
+
+                    for (i = 0; i < data.data.length; i++) {
+                        let ind = data.data.length - 1;
+                        let obj = data.data[i];
+
+                        let durat = obj.duration;
+                        if (bayno == 005 && ind > i) {
+                            if (durat.indexOf("-") !== -1 || durat == undefined || durat == null || durat == "") {
+                                obj.outtime = null;
+                                obj.duration = null;
+                                obj.count = null;
+                            }
+                        }
+
+
+                        rowhtml += `
+    <tr>
+        <td>${i + 1}</td>
+        <td>${obj.intime}</td>
+        <td>${obj.outtime == null ? "-" : obj.outtime}</td>
+<td>${obj.duration == null ? "-" : obj.duration}</td>
+ <td>${obj.nfc == null ? "-" : obj.nfc}</td><td>${obj.trucknum == null ? "-" : obj.trucknum}</td><td>${obj.name == "" ? "Not Registered" : obj.name}</td>
+<td>${obj.vendor == null ? "-" : obj.vendor}</td><td>${obj.otype == null ? "-" : obj.otype}</td><td>${obj.tname == null ? "-" : obj.tname}</td>
+<td>${obj.fid == null ? "-" : obj.fid}</td><td>${obj.count == null ? '-' : obj.count}</td >
+    </tr>
+    `;
+                        document.getElementById("reportdatas").innerHTML = rowhtml;
+
+                        spinner.hide();
+                    }
+
+                    pager.init();
+                    pager.showPageNav('pager', 'pageNavPosition');
+                    pager.showPage(1);
+                }).catch(err => alert(err));
+        }
+
+
+        async function Getreporttruckdetails(date, deviceid) {
+            let url = weburl + "api/GetReportController/Gettruckdetails/" + date + "/" + deviceid;
+
+
+
+            axios.get(url).then
+
+                (data => {
+
+                    console.log(data.data);
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    let rowreporthtml = "";
+                    spinner.hide();
+                    if (data.data.length == 0) {
+                        document.getElementById("reportdatas1").innerHTML = "No Datas";
+
+
+                        return;
+                    }
+
+                    for (i = 0; i < data.data.length; i++) {
+                        let obj = data.data[i];
+                        let durat = obj.duration;
+
+                        if (durat.indexOf("-")!=-1){
+                            obj.outtime = null;
+                            obj.duration = null;
+                            obj.count = null;
+                        }
+
+                        rowreporthtml += `
+    <tr>
+        <td>${i + 1}</td>
+        <td>${obj.intime}</td>
+        <td>${obj.outtime == null ? "-" : obj.outtime}</td>
+<td>${obj.duration == null ? "-" : obj.duration}</td>
+ <td>${obj.nfc == null ? "-" : obj.nfc}</td><td>${obj.trucknum == null ? "-" : obj.trucknum}</td><td>${obj.name == "" ? "Not Registered" : obj.name}</td>
+<td>${obj.vendor == null ? "-" : obj.vendor}</td><td>${obj.otype == null ? "-" : obj.otype}</td><td>${obj.tname == null ? "-" : obj.tname}</td>
+<td>${obj.fid == null ? "-" : obj.fid}</td><td>${obj.count == null ? '-' : obj.count}</td >
+    </tr>
+    `;
+
+                        document.getElementById("reportdatas1").innerHTML = rowreporthtml;
+                        spinner.hide();
+                    }
+
+
+                }).catch();
+        }
+
+
+
+        function searchpress() {
+            if (document.getElementById('search').value.length == 0) {
+                spinner.show();
+
+                Gettruckdetails(today, 88);
+            }
+            else if (document.getElementById('search').value.length > 0) {
+                spinner.show();
+
+                Gettruckdetailssearch(today, 006, document.getElementById('search').value);
+            }
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function pdf() {
+            var doc = new jsPDF(this.pdfOrientation, 'pt', this.pdfFormat);
+            var res = doc.autoTableHtmlToJson(document.getElementById("Table1"));
+            doc.autoTable(res.columns, res.data, {
+                margin: { top: 40, horizontal: 10 }, startY: false, theme: 'grid', pageBreak:
+                    'always', tableWidth: 'auto', columnWidth: 'wrap', showHeader: 'everyPage',
+                tableLineColor: 200, tableLineWidth: 0,
+                columnStyles: {
+                    0: { columnWidth: 'auto' }, 1: { columnWidth: 'auto' }, 2: { columnWidth: 'auto' }, 3:
+                        { columnWidth: 'auto' }, 4: { columnWidth: 'auto' },
+                    5: { columnWidth: 'auto' }, 6: { columnWidth: 'auto' }, 7: { columnWidth: 'auto' }, 8:
+                        { columnWidth: 'auto' }, 9: { columnWidth: 'auto' }, 10: { columnWidth: 'auto' },
+                    11: { columnWidth: 'auto' }, 12: { columnWidth:'auto' }
+                },
+                headerStyles: { theme: 'grid' },
+                styles: {
+                    overflow: 'linebreak', columnWidth: 'wrap', font: 'arial', fontSize: 4,
+                    cellPadding: 12, overflowColumns: 'linebreak'
+                },
+            });
+            doc.save('Report.pdf');
+        }
+
+        $("#reportdropdown").hide();
+
+
+        function download() {
+            $("#reportdropdown").show();
+
+        }
+
+        function Pager(tableName, itemsPerPage) {
+
+            this.tableName = tableName;
+
+            this.itemsPerPage = itemsPerPage;
+
+            this.currentPage = 1;
+
+            this.pages = 0;
+
+            this.inited = false;
+
+            this.showRecords = function (from, to) {
+
+                var rows = document.getElementById(tableName).rows;
+
+                // i starts from 1 to skip table header row
+
+                for (var i = 1; i < rows.length; i++) {
+
+                    if (i < from || i > to)
+
+                        rows[i].style.display = 'none';
+
+                    else
+
+                        rows[i].style.display = '';
+
+                }
+
+            }
+
+            this.showPage = function (pageNumber) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var oldPageAnchor = document.getElementById('pg' + this.currentPage);
+                oldPageAnchor == null ? 1 : oldPageAnchor;
+
+                oldPageAnchor.className = 'pg-normal';
+
+                this.currentPage = pageNumber;
+
+                var newPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                newPageAnchor.className = 'pg-selected';
+
+                var from = (pageNumber - 1) * itemsPerPage + 1;
+
+                var to = from + itemsPerPage - 1;
+
+                this.showRecords(from, to);
+
+            }
+
+            this.prev = function () {
+
+                if (this.currentPage > 1)
+
+                    this.showPage(this.currentPage - 1);
+
+            }
+
+            this.next = function () {
+
+                if (this.currentPage < this.pages) {
+
+                    this.showPage(this.currentPage + 1);
+
+                }
+
+            }
+
+            this.init = function () {
+
+                var rows = document.getElementById(tableName).rows;
+
+                var records = (rows.length - 1);
+
+                this.pages = Math.ceil(records / itemsPerPage);
+
+                this.inited = true;
+
+            }
+
+            this.showPageNav = function (pagerName, positionId) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var element = document.getElementById(positionId);
+
+                var pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal"> « Prev </span> ';
+
+                for (var page = 1; page <= this.pages; page++)
+
+                    pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span> ';
+
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal"> Next »</span>';
+
+                element.innerHTML = pagerHtml;
+
+            }
+
+        }
+    </script>
+
+</body>
+
+@section scripts
+    {
+}

@@ -1,0 +1,669 @@
+﻿@{
+
+}
+<head>
+
+
+    <style>
+
+        .card {
+            border: 1px solid grey;
+            position: absolute;
+            left: 20pc;
+            top: 15pc;
+            font-size: large;
+            min-width: 50%;
+        }
+
+        .card2 {
+            border: 1px solid grey;
+            position: absolute;
+            left: 20pc;
+            top: 10pc;
+            font-size: small;
+            min-width: 50%;
+        }
+
+        .card1 {
+            border: 1px solid grey;
+            border-radius: 10px;
+            font-size: large;
+        }
+
+        .form-control {
+            font-size: initial;
+        }
+
+        .btn-primary {
+            font-size: initial;
+        }
+
+        .btn-secondary {
+            font-size: initial;
+        }
+
+        .btn-danger {
+            font-size: initial;
+        }
+
+        @@media screen and (min-width: 0px) and (max-width: 1000px) {
+            .card {
+                left: 6pc;
+            }
+        }
+
+        .modal {
+            position: fixed; /* Stay in place */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            top: 7pc;
+        }
+
+        .f-left {
+            float: left;
+            margin-left: 0%;
+            margin-top: 30px;
+        }
+
+        .f-right {
+            margin-right: 10%;
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="row" style="margin-left:5%;">
+        <h1 style="font-weight:bold;">
+            Configuration
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-3" style="margin-left: 15%;margin-top: 10px;">
+            <button class="btn btn-primary" onclick="get();" style="width:150px;" type="button">Get Config</button>
+
+
+        </div>
+
+        @*<div class="col-3 f-right" style="margin-top:10px;">
+                <button class="btn btn-primary" onclick="change();"  style="width: 150px; float: right;" type="button">Change Config</button>
+
+
+            </div>*@
+    </div>
+    <div class="card2" id="getheader">
+        <div style="margin-left:5% ; margin-top:10px" class="d-flex justify-content-start">
+
+            <p>Carousel</p>
+            <div class="dropdown mt-2 col-md-2">
+
+                <select name="Carousel" id="Carousel">
+                    <option value="1">Carousel 1</option>
+                    <option value="2">Carousel 2</option>
+                    <option value="3">Carousel 3</option>
+                    <option value="4">Carousel 4</option>
+                </select>
+            </div>
+            <p>Device Type</p>
+            <div class="dropdown mt-2 col-md-2">
+
+                <select name="Devicetype" id="Devicetype">
+                    <option value="Counter">Counter</option>
+                    <option value="VCounter">VCounter</option>
+                    <option value="DCounter">DCounter</option>
+
+
+
+                </select>
+            </div>
+            <p>IP</p>
+            <div class="dropdown mt-2 col-md-1">
+
+                <select name="deviceip" id="deviceip">
+                </select>
+            </div>
+
+            <div class="btn-group  col-md-1">
+                <button type="submit" style="margin-bottom: 10px;" value="Submit" onclick="submitclick()">Submit</button>
+            </div>
+
+        </div>
+        @*<input id="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" />
+            <button class="btn btn-success" name="submit" id="csvsubmit" type="submit"> Upload File </button>*@
+    </div>
+    <p class="label-success" id="updatesuccess" style="width:200px;margin-left:18%;margin-top:4%;color:#fff"> Updated Successfully!!</p>
+    <div class="card mt-2" id="getdetails">
+        <div id="custom">
+            <div class="card1 ">
+                <div class=" mr-2 ml-2 mt-4">
+                    <div class="row" id="">
+
+                        <div class="col-2">
+                            <h5>Ring</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="ring" class="form-control" placeholder="Ring" required>
+                        </div>
+
+                        <div class="col-2">
+                            <h5>Nozzle</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="nozzle" class="form-control" placeholder="Nozzle" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 ">
+                        <div class="col-2">
+                            <h5>Shoulder</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="shoulder" value="" class="form-control" placeholder="Shoulder" required>
+                        </div>
+                        <div class="col-2">
+                            <h5>Edge Value</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="edge" value="" class="form-control" placeholder="Edge Value" required>
+                        </div>
+                    </div>
+                    <div class="row mt-3 ">
+
+                        <div class="col-2">
+                            <h5>Com Shoulder</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="comshoulder" value="" class="form-control" placeholder="Com_Shoulder" required>
+                        </div>
+                        <div class="col-2">
+                            <h5>Com Ring</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="comring" value="" class="form-control" placeholder="Com_Ring" required>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="row mt-3 ">
+
+                        <div class="col-2">
+                            <h5>Com Nozzle</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="comnozzle" value="" class="form-control" placeholder="Com_Nozzle" required>
+                        </div>
+                        <div class="col-2">
+                            <h5>Traffic time</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="ttime" value="" class="form-control" placeholder="Traffic_time" required>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row mt-3 ">
+                        <div class="col-2">
+                            <h5>Conveyor traffic</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="ctraffic" value="" class="form-control" placeholder="Conveyor_traffic" required>
+                        </div>
+                        <div class="col-2">
+                            <h5>Conveyor level</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="clevel" value="" class="form-control" placeholder="Conveyor_level" required>
+                        </div>
+
+
+                    </div>
+                    <div class="row mt-3 " id="Dcoun">
+                        <div class="col-2">
+                            <h5>Stopper time</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="stoptime" value="" class="form-control" placeholder="Stopper_time" required>
+                        </div>
+                        <div class="col-2">
+                            <h5>Lever time</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="ltime" value="" class="form-control" placeholder="Lever_time" required>
+                        </div>
+
+
+                    </div>
+                    <div class="row mt-3 " id="Vcoun">
+                        <div class="col-2">
+                            <h5>Relay IP</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <input type="text" id="relayip" value="" class="form-control" placeholder="Relay_IP" 
+                                    required>
+                        </div>
+                        <div class="col-2">
+                            <h5>Vcounter</h5>
+
+                        </div>
+                        <div class="col-3">
+                            <select name="vcount" id="vcount" style="width:170px;">
+                                <option value="V1">V1</option>
+
+                                <option value="V2">V2</option>
+
+
+
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mt-3 mb-3 mr-2 ml-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+                            <button class="btn btn-primary" id="change" onclick="changeconfig();" type="button">Change Config</button>
+                            <button class="btn btn-primary" id="send" onclick="Sendconfig();" type="button">Send to Device</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="alert1">
+            <div class="modal-dialog" tabindex="1">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            No trucks has been found!  Do you want add it?
+
+                        </p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="addtruck" class="btn btn-danger">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    var weburl = '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+    $('#updatesuccess').hide();
+    $('#getheader').hide();
+    $('#getdetails').hide();
+    $('#change').hide();
+    $('#send').hide();
+    $('#Vcoun').hide();
+    $('#Dcoun').hide();
+    let carousel = "1",vcoun="V1",deviceip="";
+    let type = "Counter", buttonclick = "";
+    var interval = "";
+    var relayip;
+    readonly();
+    function get() {
+        buttonclick = "get";
+        $('#getheader').show();
+
+    }
+
+    function Sendconfig() {
+        sendjsonconfig();
+    }
+    function change() {
+        buttonclick = "change";
+        $('#getheader').show();
+
+
+        if ($('#getdetails').is(':visible')) {
+
+
+
+            binddatas();
+        }
+
+    }
+
+    function submitclick() {
+        $('#send').hide();
+        $('#updatesuccess').hide();
+        if (type == "VCounter") {
+
+            $('#Vcoun').show();
+            $('#Dcoun').hide();
+        }
+        else if (type == "DCounter") {
+
+            $('#Dcoun').show();
+            $('#Vcoun').hide();
+        }
+        else {
+            $('#Vcoun').hide();
+            $('#Dcoun').hide();
+        }
+
+
+            $('#change').show();
+
+
+        $('#getdetails').show();
+
+        if (buttonclick == "get")
+            getjsonconfig();
+
+
+    }
+
+    function changeconfig() {
+        changejsonconfig();
+    }
+
+
+    $('#deviceip').change(function () {
+        var selectedvalue = this.value;
+        deviceip = selectedvalue;
+        $('#updatesuccess').hide();
+    });
+
+
+    $('#vcount').change(function () {
+        var selectedvalue = this.value;
+        vcoun = selectedvalue;
+
+        $('#updatesuccess').hide();
+    });
+    $('#Carousel').change(function () {
+        var selectedvalue = this.value;
+        carousel = selectedvalue;
+        GetDeviceIp();
+        $('#updatesuccess').hide();
+    });
+    $('#Devicetype').change(function () {
+        var selectedvalue = this.value;
+        type = selectedvalue;
+        $('#updatesuccess').hide();
+        GetDeviceIp();
+    });
+    GetDeviceIp();
+   // sendjsonconfig();
+    async function GetDeviceIp() {
+
+        let url = weburl + "api/GetConfigController/Getconfig/" + carousel + "/" + type;
+
+        axios.get(url).then
+
+            (data => {
+
+
+                if (data.data.length == 0) {
+
+                    return;
+                }
+                var optionsAsString = "";
+                for (var i = 0; i < data.data.length; i++) {
+                    let obj = data.data[i];
+                    optionsAsString += "<option value='" + obj.DeviceId + "'>" + obj.DeviceId + "</option>";
+                    if (i == 0) {
+                        deviceip = obj.DeviceId;
+                    }
+                }
+                $('select[name="deviceip"]').empty();
+                $('select[name="deviceip"]').append(optionsAsString);
+
+            }).catch(err => alert(err));
+
+
+
+    }
+
+    async function getjsonconfig() {
+
+        let url = weburl + "api/GetConfigController/getjsonconfig/" + carousel + "/" + type+ "/" + deviceip ;
+
+        axios.get(url).then
+
+            (data => {
+
+
+                if (data.data.length == 0) {
+
+                    return;
+                }
+                for (i = 0; i < data.data.length; i++) {
+                    let obj = data.data[i];
+                    binddatas(obj);
+                }
+
+            }).catch(err => alert(err));
+
+
+
+    }
+
+    async function changejsonconfig() {
+
+
+
+
+        document.getElementById("ring").readOnly = false;
+        document.getElementById("nozzle").readOnly = false;
+        document.getElementById("shoulder").readOnly = false;
+        document.getElementById("edge").readOnly = false;
+        document.getElementById("comring").readOnly = false;
+        document.getElementById("comshoulder").readOnly = false;
+        document.getElementById("comnozzle").readOnly = false;
+        document.getElementById("ttime").readOnly = false;
+        document.getElementById("ctraffic").readOnly = false;
+        document.getElementById("clevel").readOnly = false;
+        document.getElementById("relayip").readOnly = false;
+        document.getElementById("stoptime").readOnly = false;
+        document.getElementById("ltime").readOnly = false;
+        $('#vcount').prop('disabled', false);
+
+        $('#change').hide();
+        $('#send').show();
+
+
+
+
+
+
+    }
+
+
+    function sendjsonconfig() {
+       
+          
+        if (document.getElementById("ring").value == "") {
+            alert('Please enter ring value');
+        }
+        else if (document.getElementById("nozzle").value == "") {
+            alert('Please enter nozzle value');
+        }
+        else if (document.getElementById("shoulder").value == "") {
+            alert('Please enter shoulder value');
+        }
+        else if (document.getElementById("edge").value == "") {
+            alert('Please enter edge value');
+        }
+        else if (document.getElementById("comshoulder").value == "") {
+            alert('Please enter com shoulder value');
+        }
+        else if (document.getElementById("comring").value == "") {
+            alert('Please enter com ring value');
+        }
+        else if (document.getElementById("comnozzle").value == "") {
+            alert('Please enter com nozzle value');
+        }
+        else if (document.getElementById("ttime").value == "") {
+            alert('Please enter Traffic time value');
+        }
+        else if (document.getElementById("ctraffic").value == "") {
+            alert('Please enter Conveyor traffic value');
+        }
+        else if (document.getElementById("clevel").value == "") {
+            alert('Please enter Conveyor level value');
+        }
+        else if (document.getElementById("stoptime").value == "" && type == "DCounter") {
+            alert('Please enter stop time value');
+        }
+        else if (document.getElementById("ltime").value == "" && type == "DCounter") {
+            alert('Please enter lever time value');
+        }
+        else if (document.getElementById("relayip").value == "" && type == "VCounter") {
+            alert('Please enter relay IP value');
+        }
+
+
+
+
+        else {
+            var jsonstring = "";
+
+            var h = document.getElementById("relayip").value;
+           
+            h = h.replaceAll("[", "");
+            h = h.replaceAll("]", "");
+            var gh = h.split('.');
+
+
+
+            if (type == "Counter") {
+                jsonstring = document.getElementById("ring").value + "!" + document.getElementById("nozzle").value + "!" +
+                    document.getElementById("shoulder").value + "!" + document.getElementById("edge").value + "!" +
+                    document.getElementById("comshoulder").value + "!" +
+                    document.getElementById("comring").value + "!" + document.getElementById("comnozzle").value + "!" +
+                    document.getElementById("ttime").value + "!" + document.getElementById("ctraffic").value + "!" +
+                    document.getElementById("clevel").value + "!" + document.getElementById("stoptime").value + "!" +
+                    document.getElementById("ltime").value + "!" + document.getElementById("relayip").value + "!" +
+                    vcoun;
+            }
+            else if (type == "DCounter") {
+                jsonstring = document.getElementById("ring").value + "!" + document.getElementById("nozzle").value + "!" +
+                    document.getElementById("shoulder").value + "!" + document.getElementById("edge").value + "!" +
+                    document.getElementById("comshoulder").value + "!" +
+                    document.getElementById("comring").value + "!" + document.getElementById("comnozzle").value + "!" +
+                    document.getElementById("ttime").value + "!" + document.getElementById("ctraffic").value + "!" +
+                    document.getElementById("clevel").value + "!" + document.getElementById("stoptime").value + "!" +
+                    document.getElementById("ltime").value;
+            }
+            else {
+                jsonstring = document.getElementById("ring").value + "!" + document.getElementById("nozzle").value + "!" +
+                    document.getElementById("shoulder").value + "!" + document.getElementById("edge").value + "!" +
+                    document.getElementById("comshoulder").value + "!" +
+                    document.getElementById("comring").value + "!" + document.getElementById("comnozzle").value + "!" +
+                    document.getElementById("ttime").value + "!" + document.getElementById("ctraffic").value + "!" +
+                    document.getElementById("clevel").value + "!" + "0" + "!" +
+                    vcoun;
+            }
+
+            const config = {
+                headers: {
+                    'content-type': 'application/json',
+                    'Accept': 'application/json'
+
+                }
+            }
+
+            let url1 = weburl + "api/GetConfigController/storeip/" + gh;
+           // let url1 = weburl + "api/GetConfigController/changejsonconfig/" + carousel + "/" + type + "/" + deviceip + "/" + jsonstring;
+          
+
+            axios.get(url1, config)
+                .then(res => {
+
+                })
+                .catch(err => console.log(err))
+
+
+
+            let url = weburl + "api/GetConfigController/changejsonconfig/" + carousel + "/" + type + "/" + deviceip + "/" + jsonstring ;
+            axios.get(url).then
+                (data => {
+                    $('#updatesuccess').show();
+
+                    readonly();
+
+
+                }).catch(err => alert(err));
+        }
+    }
+
+
+
+    function readonly() {
+            document.getElementById("ring").readOnly = true;
+            document.getElementById("nozzle").readOnly = true;
+            document.getElementById("shoulder").readOnly = true;
+            document.getElementById("edge").readOnly = true;
+            document.getElementById("comring").readOnly = true;
+            document.getElementById("comshoulder").readOnly = true;
+            document.getElementById("comnozzle").readOnly = true;
+            document.getElementById("ttime").readOnly = true;
+            document.getElementById("ctraffic").readOnly = true;
+            document.getElementById("clevel").readOnly = true;
+            document.getElementById("relayip").readOnly = true;
+            document.getElementById("stoptime").readOnly = true;
+        document.getElementById("ltime").readOnly = true;
+        document.getElementById("vcount").readOnly = true;
+        $('#vcount').prop('disabled', true);
+        
+        }
+
+
+    function binddatas(obj) {
+             readonly();
+
+            document.getElementById("ring").value = obj.ring;
+            document.getElementById("nozzle").value = obj.nozzle;
+            document.getElementById("shoulder").value = obj.shoulder;
+            document.getElementById("edge").value = obj.edge;
+            document.getElementById("comring").value = obj.comring;
+            document.getElementById("comshoulder").value = obj.comshoulder;
+            document.getElementById("comnozzle").value = obj.comnozzle;
+            document.getElementById("ttime").value = obj.ttime;
+            document.getElementById("ctraffic").value = obj.ctraffic;
+            document.getElementById("clevel").value = obj.clevel;
+            document.getElementById("relayip").value = obj.relayip;
+            document.getElementById("stoptime").value = obj.stoptime;
+            document.getElementById("ltime").value = obj.ltime;
+            document.getElementById("vcount").value = obj.vcounter;
+        
+
+    }
+    class ipnum {
+        static ipno = document.getElementById('relayip').value;
+        static ipno() {
+            return this.staticVariable;
+        }
+    }
+</script>

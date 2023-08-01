@@ -1,0 +1,675 @@
+﻿
+@{
+    ViewBag.Title = "Unregistered NFC";
+}
+
+<!DOCTYPE html>
+
+
+
+    <style>
+        body {
+            margin-top: 20px;
+            background: #FAFAFA;
+        }
+
+        .order-card {
+            color: #000;
+        }
+
+        .bg-c-blue {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-green {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-yellow {
+            background-color: #f1f1f1;
+        }
+
+        .bg-c-pink {
+            background-color: #f1f1f1;
+        }
+
+
+        .card {
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+            border: none;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            width:100%;
+        }
+
+            .card .card-block {
+                padding: 25px;
+            }
+
+        .order-card i {
+            font-size: 26px;
+        }
+
+        .f-left {
+            float: left;
+        }
+
+        .f-right {
+            float: right;
+        }
+
+        .column {
+            float: left;
+            width: 10%;
+            border: 1px solid black;
+            height: 50px;
+            margin: 1px 0px 2px 1px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <style type="text/css">
+        .paging-nav {
+            text-align: right;
+            padding-top: 2px;
+        }
+
+            .paging-nav a {
+                margin: auto 1px;
+                text-decoration: none;
+                display: inline-block;
+                padding: 1px 7px;
+                background: #03174f;
+                color: white;
+                border-radius: 3px;
+            }
+
+            .paging-nav .selected-page {
+                background: #03174f;
+                font-weight: bold;
+            }
+
+        .paging-nav,
+        #Table {
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .divpadding {
+            border: 3px solid green;
+        }
+    </style>
+
+    <style type="text/css">
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.75) url(../assets/loader.gif) no-repeat center center;
+            z-index: 10000;
+        }
+
+        .pg-normal {
+            color: #ffffff;
+            font-size: 15px;
+            cursor: pointer;
+            background: #03174f;
+            padding: 2px 4px 2px 4px;
+        }
+
+        .pg-selected {
+            color: #000;
+            font-size: 15px;
+            background: #ffffff;
+            padding: 2px 4px 2px 4px;
+        }
+
+        table.yui {
+            font-family: arial;
+            border-collapse: collapse;
+            border: solid 1px #03174f;
+            font-size: small;
+        }
+
+            table.yui td {
+                padding: 5px;
+                border-right: solid 1px #03174f;
+            }
+
+        table {
+            border-collapse: collapse;
+        }
+
+            table td {
+                padding: 0.5rem;
+                border: 1px solid #fff;
+            }
+
+        .dropdown {
+            z-index: 1;
+        }
+    </style>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        tr {
+            border-bottom: 1pt solid black;
+            background: #fafafa;
+        }
+
+            tr:nth-child(even) {
+                background-color: #D6EEEE;
+            }
+        @@keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+
+        .spin::before {
+            animation: 1.5s linear infinite spinner;
+            animation-play-state: inherit;
+            border: solid 5px #cfd0d1;
+            border-bottom-color: #1c87c9;
+            border-radius: 50%;
+            content: "";
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            transform: translate3d(-50%, -50%, 0);
+            will-change: transform;
+        }
+
+        .justify-content-start {
+            position: absolute;
+            margin-top: 55px;
+            margin-left: 15px;
+        }
+
+        .dropbtn {
+            background-color: white;
+            color: black;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: white;
+        }
+        .dropdown__arrow{
+            border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    position: absolute;
+    top: 50%;
+    right: 136px;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg) translateY(-50%);
+    transform-origin: right;
+        }
+        #btnExport{
+            width:35px;
+            margin-top:5px;
+        }
+    </style>
+
+<body>
+    <div class="row mb-5 justify-content-center" style="margin-top:30px;">
+        <div class="col-lg-3 col-xl-6">
+            <div class="card">
+                <h2 class="card-header fw-bolder iocl-blue-text">
+                    UnRegistered NFC
+                </h2>
+
+                <div class="d-flex justify-content-start">
+
+                    <div class="btn-group">
+                        <input type="date" id="datechange">
+                    </div>
+
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div class="btn-group float-end">
+                        <image src="../assets/excel.png" id="btnExport" onclick="exportReportToExcel(this);"></image>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <image src="../assets/pdf.png" id="btnExport" onclick="pdf();"></image>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    </div>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col">
+                    <table id="Table1" hidden style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                        <thead id="reporthead1">
+                            <tr align="left" style="background-color:#004080;color:White;">
+                                <td>S.No</td>
+                                <td>Date</td>
+                                <td>NFC</td>
+                              
+                            </tr>
+                        <tbody id="reportdatas1"></tbody>
+                    </table>
+                    <table id="Table" style="border: 1px solid black;border-collapse: collapse;" width="100%" align="center" cellpadding="2" cellspacing="2" border="0" bgcolor="#EAEAEA">
+                        <thead id="reporthead">
+                            <tr align="left" style="background-color:#004080;color:White;">
+                                <td>S.No</td>
+                                <td>Date</td>
+                                <td>NFC</td>
+                               
+                            </tr>
+
+                        <tbody id="reportdatas"></tbody>
+                    </table>
+                </div>
+                <div id="pageNavPosition" style="padding-top: 20px" align="center"></div>
+
+            </div>
+        </div>
+    
+    </div>
+
+    <div id="loader"></div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+    <script src="../Scripts/table2excel.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        let docdefinition = "";
+        let aryx = [],aryy=[];
+        var pager = new Pager('Table', 10);
+        var spinner = $('#loader');
+        var today,hourvalue,selectedcaro;
+        var weburl= '@System.Configuration.ConfigurationManager.AppSettings["URL"]';
+        $(document).ready(function () {
+
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            today = now.getFullYear() + "-" + (month) + "-" + (day);
+            $('#datechange').val(today);
+            spinner.show();
+            Getproductioncount(today);
+            datechange.max = new Date().toISOString().split("T")[0];
+        });
+
+        function exportReportToExcel() {
+            var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange; var j = 0;
+            tab = document.getElementById('Table'); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+            {
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            }
+            else                 //other browser not tested on IE 11
+                sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+            return (sa);
+        }
+
+
+        $('#datechange').change(function () {
+            var selecteddate = this.value;
+            today = selecteddate;
+            spinner.show();
+          
+           $('#reportdatas').innerHTML = "";
+            Getproductioncount(selecteddate, );
+        });
+        async function Getproductioncount(value) {
+
+            let url = weburl + "api/GetReportController/GetNFC/" + value ;
+          
+
+            axios.get(url).then
+
+                (data => {
+
+                    console.log(data.data);
+                    var row = '', row1 = '', row2 = '', row3 = '';
+                    let rowhtml = "",rowhtml1="";
+                    spinner.hide();
+                    if (data.data.length == 0) {
+
+                       
+                        document.getElementById("reportdatas").innerHTML = "No Datas";
+                        return;
+                    }
+
+                    for (i = 0; i < data.data.length;i++)
+                    {
+                        let obj = data.data[i];
+
+                        let count = obj.count == null ? 0 : obj.count;
+                        if (obj.count == 0 & obj.hour ==6) {
+                            continue;
+                        }
+                        if (obj.hour == 0) {
+                            continue;
+                        }
+                     
+                          
+                         
+
+                            rowhtml += `<tr><td>${i + 1}</td><td>${today}</td>
+<td>${obj.NFC}</td></tr>
+`;
+                     
+                        document.getElementById("reportdatas").innerHTML = rowhtml;
+                        
+                        document.getElementById("reportdatas1").innerHTML = rowhtml;
+                        spinner.hide();
+                    }
+
+                    pager.init();
+                    pager.showPageNav('pager', 'pageNavPosition');
+                    pager.showPage(1);
+
+                }).catch(err => alert(err));
+
+
+        }
+
+   
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function pdf() {
+            var doc = new jsPDF(this.pdfOrientation, 'pt', this.pdfFormat);
+            var res = doc.autoTableHtmlToJson(document.getElementById("Table1"));
+            doc.autoTable(res.columns, res.data, {
+                margin: { top: 40, horizontal: 10 }, startY: false, theme: 'grid', pageBreak:
+                    'always', tableWidth: 'auto', columnWidth: 'wrap', showHeader: 'everyPage',
+                tableLineColor: 200, tableLineWidth: 0,
+                columnStyles: {
+                    0: { columnWidth: 'auto' }, 1: { columnWidth: 'auto' }, 2: { columnWidth: 'auto' }, 3:
+                        { columnWidth: 'auto' }, 4: { columnWidth: 'auto' },
+                    5: { columnWidth: 'auto' }, 6: { columnWidth: 'auto' }, 7: { columnWidth: 'auto' }, 8:
+                        { columnWidth: 'auto' }
+                },
+                headerStyles: { theme: 'grid' },
+                styles: {
+                    overflow: 'linebreak', columnWidth: 'wrap', font: 'arial', fontSize: 10,
+                    cellPadding: 8, overflowColumns: 'linebreak'
+                },
+            });
+            doc.save('Report.pdf');
+        }
+        //function exportReportToExcel() {
+        //    $("#Table").table2excel({
+        //        filename: "Report.xls"
+        //    });
+        //    var row = table.insertRow(0);
+
+        //    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+        //    var cell1 = row.insertCell(0);
+        //    var cell2 = row.insertCell(1);
+
+        //    // Add some text to the new cells:
+        //    cell1.innerHTML = "NEW CELL1";
+        //    cell2.innerHTML = "NEW CELL2";
+
+        //}
+        function tableToCSV() {
+
+            // Variable to store the final csv data
+            var csv_data = [];
+
+            // Get each row data
+            var rows = document.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+
+                // Get each column data
+                var cols = rows[i].querySelectorAll('td,th');
+
+                // Stores each csv row data
+                var csvrow = [];
+                for (var j = 0; j < cols.length; j++) {
+
+                    // Get the text data of each cell
+                    // of a row and push it to csvrow
+                    csvrow.push(cols[j].innerHTML);
+                }
+
+                // Combine each column value with comma
+                csv_data.push(csvrow.join(","));
+            }
+
+            // Combine each row data with new line character
+            csv_data = csv_data.join('\n');
+
+            // Call this function to download csv file
+            downloadCSVFile(csv_data);
+
+        }
+        function downloadCSVFile(csv_data) {
+
+            // Create CSV file object and feed
+            // our csv_data into it
+            CSVFile = new Blob([csv_data], {
+                type: "text/csv"
+            });
+
+            // Create to temporary link to initiate
+            // download process
+            var temp_link = document.createElement('a');
+
+            // Download csv file
+            temp_link.download = "Report.csv";
+            var url = window.URL.createObjectURL(CSVFile);
+            temp_link.href = url;
+
+            // This link should not be displayed
+            temp_link.style.display = "none";
+            document.body.appendChild(temp_link);
+
+            // Automatically click the link to
+            // trigger download
+            temp_link.click();
+            document.body.removeChild(temp_link);
+        }
+        function Pager(tableName, itemsPerPage) {
+
+            this.tableName = tableName;
+
+            this.itemsPerPage = itemsPerPage;
+
+            this.currentPage = 1;
+
+            this.pages = 0;
+
+            this.inited = false;
+
+            this.showRecords = function (from, to) {
+
+                var rows = document.getElementById(tableName).rows;
+
+                // i starts from 1 to skip table header row
+
+                for (var i = 1; i < rows.length; i++) {
+
+                    if (i < from || i > to)
+
+                        rows[i].style.display = 'none';
+
+                    else
+
+                        rows[i].style.display = '';
+
+                }
+
+            }
+
+            this.showPage = function (pageNumber) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var oldPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                oldPageAnchor.className = 'pg-normal';
+
+                this.currentPage = pageNumber;
+
+                var newPageAnchor = document.getElementById('pg' + this.currentPage);
+
+                newPageAnchor.className = 'pg-selected';
+
+                var from = (pageNumber - 1) * itemsPerPage + 1;
+
+                var to = from + itemsPerPage - 1;
+
+                this.showRecords(from, to);
+
+            }
+
+            this.prev = function () {
+
+                if (this.currentPage > 1)
+
+                    this.showPage(this.currentPage - 1);
+
+            }
+
+            this.next = function () {
+
+                if (this.currentPage < this.pages) {
+
+                    this.showPage(this.currentPage + 1);
+
+                }
+
+            }
+
+            this.init = function () {
+
+                var rows = document.getElementById(tableName).rows;
+
+                var records = (rows.length - 1);
+
+                this.pages = Math.ceil(records / itemsPerPage);
+
+                this.inited = true;
+
+            }
+
+            this.showPageNav = function (pagerName, positionId) {
+
+                if (!this.inited) {
+
+                    alert("not inited");
+
+                    return;
+
+                }
+
+                var element = document.getElementById(positionId);
+
+                var pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal"> « Prev </span> ';
+
+                for (var page = 1; page <= this.pages; page++)
+
+                    pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span> ';
+
+                pagerHtml += '<span onclick="' + pagerName + '.next();" class="pg-normal"> Next »</span>';
+
+                element.innerHTML = pagerHtml;
+
+            }
+
+        }
+    </script>
+
+
+</body>
+
+@section scripts
+    {
+
+
+}
+
+
