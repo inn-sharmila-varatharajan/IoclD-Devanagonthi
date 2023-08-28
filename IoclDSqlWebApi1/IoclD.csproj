@@ -196,6 +196,7 @@
     <Content Include="assets\excel.png" />
     <Content Include="assets\eye.png" />
     <Content Include="assets\gas_station.svg" />
+    <Content Include="assets\gas_station_2.svg" />
     <Content Include="assets\gas_station.css" />
     <Content Include="assets\gas_station.js" />
     <Content Include="assets\jquery-3.6.0.min.js" />

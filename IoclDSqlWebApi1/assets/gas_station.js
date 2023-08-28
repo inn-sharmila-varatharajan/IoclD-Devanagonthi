@@ -189,20 +189,27 @@ async function loadtruckData() {
 
         const data = await response.json();
         $(".truck").hide();
+        $(".vid").hide();
+       
 
         data.forEach((obj) => {
             const ids = ("0" + obj.device).slice(-3);
-            const truckId = "#truck_" + ids;
+            const truckId = "#truck_" + ids+"_1";
+            const vid = "#V" + ids;
+          
           //  console.log(obj)
             if (obj.status == "0" || obj.status == "4" || obj.status=="1") {
                
                 if ($(truckId).length) {
                     $(truckId).show();
+                    $(vid).show();
+                    $(vid).text(obj.vehnum);
                 }
             }
             else {
                 if ($(truckId).length) {
                     $(truckId).hide();
+                    $(vid).text("");
                 }
             }
             });

@@ -4960,6 +4960,8 @@ a.close.disabled {
   max-width: 200px;
   padding: 0.25rem 0.5rem;
   color: #fff;
+  margin-left:20px;
+  margin-top:-1px;
   text-align: center;
   background-color: transparent;
   border-radius: 0.25rem; }

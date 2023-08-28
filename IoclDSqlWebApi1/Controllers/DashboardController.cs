@@ -261,8 +261,8 @@ public class GetDashboardController : ApiController
                 var result = ds.Tables[1].AsEnumerable().Select(item => new
                 {
                     device = item["_Device_Id"],
-                    status =item["status"]
-
+                    status =item["status"],
+                    vehnum= item["vehnum"]
 
                 }).ToArray();
 
